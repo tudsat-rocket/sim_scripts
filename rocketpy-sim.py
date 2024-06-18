@@ -1,7 +1,7 @@
 from rocketpy import Environment, Rocket, SolidMotor, Flight
 
 import datetime
-import math.pi
+import math
 
 launch_environment = Environment(
     latitude = 39.39011270334382,
@@ -18,8 +18,8 @@ launch_environment.set_atmospheric_model(
     type="custom_atmosphere",
     pressure=None,
     temperature=273.15+21,
-    wind_u[(0,-1.5), (1000, -5)]
-    wind_v[(0,-0.5), (1000, -2)]
+    wind_u = [(0,-1.5), (1000, -5)],
+    wind_v = [(0,-0.5), (1000, -2)],
 )
 
 motor_m1790 = SolidMotor(
@@ -42,12 +42,14 @@ motor_m1790 = SolidMotor(
 )
 
 height = 3.015
+mass = 15.245
+radius=0.075
 
 # Regarding calculation of intertia c.f. https://itp.uni-frankfurt.de/~luedde/Lecture/Mechanik/Intranet/Skript/Kap7/node5.html
 frodo_m = Rocket(
-    radius=0.075,
-    mass=15.245,
-    inertia=(mass/2)*(0.5*(radius**2+(height**2/3)),0.5*(radius**2+(height**2/3)),radius**2),
+    radius=radius,
+    mass=mass,
+    inertia=((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2),
     power_off_drag=None, #TODO
     power_on_drag=None, #TODO
     center_of_mass_without_motor=0,
@@ -59,7 +61,9 @@ buttons = frodo_m.set_rail_buttons(
     lower_button_position=0, #TODO
 )
 
-frodo_m.add_motor(motor_m1790, position=0 #TODO)
+frodo_m.add_motor(motor_m1790, 
+        position=0 #TODO
+        )
 
 nose_cone = frodo_m.add_nose(
     length=0, #TODO,
@@ -88,7 +92,7 @@ tail = frodo_m.add_tail(
 
 main = frodo_m.add_parachute(
     name="main",
-    cd_s=2.2*pi*1.22**2,
+    cd_s=2.2*math.pi*1.22**2,
     trigger=450,
     sampling_rate=105,
     lag=1, #TODO
@@ -97,7 +101,7 @@ main = frodo_m.add_parachute(
 
 drogue = frodo_m.add_parachute(
     name="drogue",
-    cd_s=1.6*pi*0.3**2,
+    cd_s=1.6*math.pi*0.3**2,
     trigger="apogee",
     sampling_rate=105,
     lag=1, #TODO
@@ -121,6 +125,4 @@ euroc.prints.maximum_values()
 euroc.plots.trajectory_3d()
 
 euroc.plots.linear_kinematics_data()
-
-
 
