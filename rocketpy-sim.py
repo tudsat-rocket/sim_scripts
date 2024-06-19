@@ -50,8 +50,8 @@ frodo_m = Rocket(
     radius=radius,
     mass=mass,
     inertia=((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2),
-    power_off_drag=None, #TODO
-    power_on_drag=None, #TODO
+    power_off_drag="data/drag/FrodoMPowerOffDrag.csv",
+    power_on_drag="data/drag/FrodoMPowerOnDrag.csv",
     center_of_mass_without_motor=0,
     coordinate_system_orientation="tail_to_nose"
 )
