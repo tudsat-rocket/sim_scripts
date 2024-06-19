@@ -77,11 +77,11 @@ nose_cone = frodo_m.add_nose(
 #TODO
 fin_set = frodo_m.add_trapezoidal_fins(
     n=3,
-    root_chord=0.120,
-    tip_chord=0.060,
+    root_chord=0.25,
+    tip_chord=0.15,
     span=0.150,
     position=-1.044,
-    cant_angle=0.5,
+    sweep_length=0.1,
     airfoil=None, # can we get airfoil parameters?
 )
 
