@@ -120,12 +120,16 @@ frodo_m.draw()
 euroc = Flight(
         environment=launch_environment,
         rocket=frodo_m,
-        rail_length=6, #TODO
+        rail_length=12,
         inclination=85,
         heading=0 #TODO
         )
 
 euroc.prints.maximum_values()
+
+euroc.prints.out_of_rail_conditions()
+
+euroc.prints.apogee_conditions()
 
 euroc.plots.trajectory_3d()
 
