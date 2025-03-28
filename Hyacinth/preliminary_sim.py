@@ -117,7 +117,7 @@ hyacinth.add_trapezoidal_fins(
     span=0.150,
     position=2.87,
     sweep_length=0.060,
-    airfoil=None #TODO make airfoil (0008)
+    airfoil=("data/lift/naca_0008_final.csv","degrees")
 )
 
 #add boattail
