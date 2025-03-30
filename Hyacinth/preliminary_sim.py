@@ -3,6 +3,17 @@ import rocketpy
 import datetime
 import math
 
+import libs.data_handler as data_handler
+
+#FILES
+drag_pwr_off = "Hyacinth/data/drag/FrodoMPowerOffDrag.csv"
+drag_pwr_on = "Hyacinth/data/drag/FrodoMPowerOnDrag.csv"
+fin_lift = "Hyacinth/data/lift/naca_0008_final.csv"
+
+valispace_data = data_handler.load_data("Hyacinth/data/valispace/vali_sim_data.yaml")
+print(data_handler.center_of_mass(valispace_data))
+print(valispace_data["valis"]["length"])
+
 #set environment to actual launch site
 launch_environment = rocketpy.Environment(
     latitude = 39.39011270334382,
@@ -89,9 +100,9 @@ hyacinth = rocketpy.Rocket(
     mass=mass,
     #TODO fix inertia
     inertia=((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2),
-    power_off_drag="data/drag/FrodoMPowerOffDrag.csv", #obtained using RasAero #TODO redo
-    power_on_drag="data/drag/FrodoMPowerOnDrag.csv", #obtained using RasAero
-    center_of_mass_without_motor=1.54, #coordinate system same as OpenRocket and RasAero #TODO recalculate
+    power_off_drag = drag_pwr_off,
+    power_on_drag = drag_pwr_on,
+    center_of_mass_without_motor=1.82, #coordinate system same as OpenRocket and RasAero #TODO recalculate
     coordinate_system_orientation="nose_to_tail"
 )
 
@@ -117,7 +128,7 @@ hyacinth.add_trapezoidal_fins(
     span=0.150,
     position=2.87,
     sweep_length=0.060,
-    airfoil=("data/lift/naca_0008_final.csv","degrees")
+    airfoil=(fin_lift,"degrees")
 )
 
 #add boattail

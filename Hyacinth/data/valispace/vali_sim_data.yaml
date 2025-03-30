@@ -1,0 +1,406 @@
+children:
+  4414:
+    children:
+      4264:
+        children:
+          4258:
+            children: {}
+            name: NoseCone
+            valis:
+              length: 0.45
+              mass: 0.9
+          4286:
+            children: {}
+            name: ChutesAndCords
+            valis:
+              mass: 0.98
+          4288:
+            children: {}
+            name: SepatrationMechanism
+            valis:
+              mass: 0.5
+          4289:
+            children: {}
+            name: Structure
+            valis:
+              mass: 0.5
+          4297:
+            children: {}
+            name: Bodytube
+            valis:
+              length: 0.05
+              mass: 0.05
+          4447:
+            children: {}
+            name: Wiring
+            valis: {}
+        name: 01_Main_Deploy_Module
+        valis:
+          length: 0.5
+          mass: 2.93
+          position: 0.0
+      4266:
+        children:
+          4300:
+            children: {}
+            name: Bodytube
+            valis:
+              length: 0.07
+              mass: 0.07
+          4302:
+            children: {}
+            name: Cloth
+            valis:
+              mass: 0.2
+          4304:
+            children: {}
+            name: Structure
+            valis:
+              mass: 0.8
+          4305:
+            children: {}
+            name: OpeningMechanism
+            valis:
+              mass: 1.0
+          4306:
+            children: {}
+            name: Electronics
+            valis:
+              mass: 0.1
+          4314:
+            children: {}
+            name: Panels
+            valis:
+              mass: 0.5
+          4481:
+            children:
+              4482:
+                children: {}
+                name: Screws
+                valis:
+                  mass: 0.037200000000000004
+              4483:
+                children: {}
+                name: Radonts
+                valis:
+                  length: 0.012
+                  mass: 0.304
+              4484:
+                children: {}
+                name: Inserts
+                valis:
+                  length: 0.002
+                  mass: 0.060599999999999994
+              4485:
+                children: {}
+                name: CarbonRods
+                valis:
+                  length: 0.267
+                  mass: 0.05874000000000001
+            name: InnerStructure
+            valis:
+              length: 0.281
+              mass: 0.46054
+        name: 02_ParaBrake_Module
+        valis:
+          length: 0.37
+          mass: 3.13054
+          position: 0.5
+    name: A_Recovery_Module
+    valis:
+      length: 0.87
+      mass: 6.0605400000000005
+      position: 0.0
+  4415:
+    children:
+      4267:
+        children:
+          4284:
+            children: {}
+            name: Insides
+            valis:
+              mass: 1.3
+          4285:
+            children: {}
+            name: Panels
+            valis:
+              mass: 0.3
+          4290:
+            children: {}
+            name: Structure
+            valis:
+              mass: 0.2
+        name: 02_Avionics
+        valis:
+          length: 0.274
+          mass: 1.8
+          position: 0.14
+      4268:
+        children:
+          4292:
+            children: {}
+            name: Payload
+            valis:
+              mass: 1.0
+          4293:
+            children: {}
+            name: Structure
+            valis:
+              mass: 0.3
+          4294:
+            children: {}
+            name: Panels
+            valis:
+              mass: 0.2
+          4295:
+            children: {}
+            name: Electronics
+            valis:
+              mass: 0.08
+        name: 01_Payload
+        valis:
+          length: 0.14
+          mass: 1.58
+          position: 0.0
+      4476:
+        children:
+          4477:
+            children: {}
+            name: Screws
+            valis:
+              mass: 0.037200000000000004
+          4478:
+            children: {}
+            name: Radonts
+            valis:
+              length: 0.012
+              mass: 0.304
+          4479:
+            children: {}
+            name: Inserts
+            valis:
+              length: 0.002
+              mass: 0.054599999999999996
+          4480:
+            children: {}
+            name: CarbonRods
+            valis:
+              length: 0.4
+              mass: 0.088
+        name: InnerStructure
+        valis:
+          length: 0.41400000000000003
+          mass: 0.4838
+          position: 0.0
+    name: B_Payvionics_Module
+    valis:
+      length: 0.41400000000000003
+      mass: 3.8638000000000003
+      position: 0.87
+  4416:
+    children:
+      4271:
+        children:
+          4278:
+            children:
+              4308:
+                children: {}
+                name: Tube
+                valis:
+                  length: 0.6446155222726161
+                  mass: 4.724198511036177
+              4309:
+                children: {}
+                name: Endcap_top
+                valis:
+                  mass: 1.0
+              4310:
+                children: {}
+                name: Endcap_bottom
+                valis:
+                  mass: 1.0
+            name: Tank
+            valis:
+              mass: 6.724198511036177
+          4279:
+            children: {}
+            name: NitrousOxide
+            valis: {}
+          4461:
+            children: {}
+            name: Raceway
+            valis: {}
+        name: 03_Oxidizer_Tank
+        valis:
+          length: 0.9
+          mass: 6.724198511036177
+          position: 0.514
+      4272:
+        children:
+          4269:
+            children: {}
+            name: FinCan
+            valis:
+              mass: 1.4000000000000001
+          4274:
+            children: {}
+            name: SolidFuel
+            valis: {}
+          4275:
+            children: {}
+            name: Nozzle
+            valis:
+              mass: 0.85
+          4277:
+            children: {}
+            name: Injector
+            valis:
+              mass: 0.05
+          4307:
+            children: {}
+            name: Casing
+            valis:
+              mass: 1.7
+          4311:
+            children: {}
+            name: MainValve
+            valis:
+              mass: 0.6
+          4353:
+            children: {}
+            name: Liner
+            valis:
+              mass: 0.78
+          4354:
+            children: {}
+            name: Bulkhead
+            valis:
+              mass: 0.15
+          4355:
+            children: {}
+            name: Igniter
+            valis:
+              mass: 0.17
+        name: 05_CombustionChamber
+        valis:
+          length: 0.47500000000000003
+          mass: 5.7
+          position: 1.678
+      4313:
+        children:
+          4270:
+            children:
+              4280:
+                children: {}
+                name: Tank
+                valis:
+                  mass: 0.684
+              4281:
+                children: {}
+                name: Nitrogen
+                valis:
+                  mass: 0.41250000000000003
+            name: PressureTank
+            valis:
+              mass: 1.0965
+          4486:
+            children: {}
+            name: BodyTube
+            valis:
+              length: 0.35000000000000003
+              mass: 0.3
+        name: 01_Pressurant_Tank
+        valis:
+          length: 0.35000000000000003
+          mass: 1.3965
+          position: 0.0
+      4490:
+        children:
+          4349:
+            children: {}
+            name: SafetyValve
+            valis: {}
+          4466:
+            children:
+              4467:
+                children: {}
+                name: Screws
+                valis:
+                  mass: 0.037200000000000004
+              4468:
+                children: {}
+                name: Radonts
+                valis:
+                  length: 0.012
+                  mass: 0.304
+              4469:
+                children: {}
+                name: Inserts
+                valis:
+                  length: 0.002
+                  mass: 0.060599999999999994
+              4470:
+                children: {}
+                name: CarbonRods
+                valis:
+                  length: 0.15
+                  mass: 0.033
+            name: InnerStructure
+            valis:
+              length: 0.164
+              mass: 0.4348
+        name: 02_Top_Valvery
+        valis:
+          length: 0.164
+          mass: 0.4348
+          position: 0.35000000000000003
+      4491:
+        children:
+          4312:
+            children: {}
+            name: FillValvery
+            valis:
+              mass: 0.6
+          4471:
+            children:
+              4472:
+                children: {}
+                name: Screws
+                valis:
+                  mass: 0.037200000000000004
+              4473:
+                children: {}
+                name: Radonts
+                valis:
+                  length: 0.012
+                  mass: 0.304
+              4474:
+                children: {}
+                name: Inserts
+                valis:
+                  length: 0.002
+                  mass: 0.060599999999999994
+              4475:
+                children: {}
+                name: CarbonRods
+                valis:
+                  length: 0.25
+                  mass: 0.055
+            name: InnerStructure
+            valis:
+              length: 0.264
+              mass: 0.4568
+        name: 04_Bottom_Valvery
+        valis:
+          length: 0.264
+          mass: 1.0568
+          position: 1.414
+    name: C_Propulsion_Module
+    valis:
+      length: 2.153
+      mass: 15.312298511036177
+      position: 1.284
+name: Rocket
+valis:
+  length: 3.4370000000000003
+  mass: 25.236638511036176
