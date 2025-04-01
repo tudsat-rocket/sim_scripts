@@ -33,8 +33,8 @@ launch_environment.set_atmospheric_model(
     temperature=None,
     #TODO change this to historical wind
     #TODO potenital pressure and temperature with custom atmosphere
-    wind_u = [(0,-1.5), (1000, -5)],
-    wind_v = [(0,-0.5), (1000, -2)],
+    wind_u = -1.5,
+    wind_v = -0.5,
 )
 
 #use OpenElevation for elevation data
@@ -91,9 +91,9 @@ hyacinth_motor.add_tank(
 
 #definition of values for inertia calculation; inertia calculation based on ideal cylinder
 #TODO change to actual parts, import from valispace
-height = 3.22
+height = valispace_data["valis"]["length"]
 mass = 23.727
-radius=0.076
+radius=0.075
 
 hyacinth = rocketpy.Rocket(
     radius=radius,
@@ -111,7 +111,7 @@ buttons = hyacinth.set_rail_buttons(
     lower_button_position=2.95, #TODO
 )
 
-hyacinth.add_motor(hyacinth_motor, position=3.22)
+hyacinth.add_motor(hyacinth_motor, position=height)
 #add von karman nose cone
 
 hyacinth.add_nose(
@@ -126,17 +126,17 @@ hyacinth.add_trapezoidal_fins(
     root_chord=0.240,
     tip_chord=0.160,
     span=0.150,
-    position=2.87,
+    position=height-0.240,
     sweep_length=0.060,
     airfoil=(fin_lift,"degrees")
 )
 
 #add boattail
 hyacinth.add_tail(
-    top_radius=0.076,  
+    top_radius=0.075,
     bottom_radius=0.06,
-    length=0.10, 
-    position=3.12
+    length=0.10,
+    position=height-0.10
 )
 
 #add main chute, values according to fruity chutes
