@@ -24,7 +24,7 @@ import yaml
 
 import datetime
 
-username = "YOUR_EMAIL_HERE"
+username = "manuel.schluesener@tudsat.space"
 
 allowed_keys_sim = ["length", "mass", "position"]
 
@@ -96,7 +96,7 @@ allowed_keys_valis = ["path", "id", "description", "shortname", "parent",
 sim_valis = [{key: vali[key] for key in vali.keys() if key in allowed_keys_valis} for vali in valis]
 
 out_dict = get_rec_components(4256)
-    
+
 with open("Hyacinth/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
 

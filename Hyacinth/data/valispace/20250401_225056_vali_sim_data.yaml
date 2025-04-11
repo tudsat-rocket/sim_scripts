@@ -7,7 +7,7 @@ children:
             children: {}
             name: NoseCone
             valis:
-              length: 0.5
+              length: 0.45
               mass: 0.9
           4286:
             children: {}
@@ -18,150 +18,65 @@ children:
             children: {}
             name: SepatrationMechanism
             valis:
-              mass: 0.43
+              mass: 0.5
           4289:
             children: {}
             name: Structure
             valis:
-              length: 0.05
               mass: 0.5
           4297:
             children: {}
-            name: CouplingTube
+            name: Bodytube
             valis:
-              mass: 0.15
+              length: 0.05
+              mass: 0.05
           4447:
             children: {}
             name: Wiring
-            valis:
-              mass: 0.1
-          4576:
-            children: {}
-            name: IOModule
-            valis:
-              mass: 0.025
-          4577:
-            children: {}
-            name: Plate
-            valis:
-              mass: 0.2
-          4578:
-            children: {}
-            name: EyeNuts
-            valis:
-              mass: 0.12
+            valis: {}
         name: 01_Main_Deploy_Module
         valis:
-          length: 0.55
-          mass: 3.4050000000000002
+          length: 0.5
+          mass: 2.93
           position: 0.0
       4266:
         children:
+          4300:
+            children: {}
+            name: Bodytube
+            valis:
+              length: 0.07
+              mass: 0.07
           4302:
             children: {}
             name: Cloth
             valis:
-              mass: 0.04168
+              mass: 0.2
+          4304:
+            children: {}
+            name: Structure
+            valis:
+              mass: 0.8
           4305:
-            children:
-              4565:
-                children: {}
-                name: NutAttachment
-                valis:
-                  mass: 0.04
-              4566:
-                children: {}
-                name: CarbonTubes
-                valis:
-                  mass: 0.048060000000000005
-              4567:
-                children: {}
-                name: CarbonTubesInserts
-                valis:
-                  mass: 0.012
-              4568:
-                children: {}
-                name: Pins
-                valis:
-                  mass: 0.03
-              4569:
-                children: {}
-                name: LeadScrew
-                valis:
-                  mass: 0.06
-              4570:
-                children: {}
-                name: LeadScrewNut
-                valis:
-                  mass: 0.012
-              4571:
-                children: {}
-                name: BottomBearing
-                valis:
-                  mass: 0.043000000000000003
-              4572:
-                children: {}
-                name: Motor
-                valis:
-                  mass: 0.35000000000000003
-              4574:
-                children: {}
-                name: MotorCover
-                valis:
-                  mass: 0.06
+            children: {}
             name: OpeningMechanism
             valis:
-              mass: 0.65506
+              mass: 1.0
           4306:
-            children:
-              4575:
-                children: {}
-                name: Wiring
-                valis:
-                  mass: 0.1
+            children: {}
             name: Electronics
             valis:
               mass: 0.1
           4314:
-            children:
-              4560:
-                children: {}
-                name: CarbonFibre
-                valis:
-                  mass: 0.43
-              4561:
-                children: {}
-                name: SandwichPlate
-                valis:
-                  mass: 0.19
-              4562:
-                children: {}
-                name: Screws
-                valis:
-                  mass: 0.07200000000000001
-              4563:
-                children: {}
-                name: Hinge
-                valis:
-                  mass: 0.42
-              4564:
-                children: {}
-                name: PanelAttachment
-                valis:
-                  mass: 0.045
-              4573:
-                children: {}
-                name: HingeScrews
-                valis:
-                  mass: 0.1116
+            children: {}
             name: Panels
             valis:
-              mass: 1.2686
+              mass: 0.5
           4481:
             children:
               4482:
                 children: {}
-                name: InternalScrews
+                name: Screws
                 valis:
                   mass: 0.037200000000000004
               4483:
@@ -169,7 +84,7 @@ children:
                 name: Radonts
                 valis:
                   length: 0.012
-                  mass: 0.405
+                  mass: 0.304
               4484:
                 children: {}
                 name: Inserts
@@ -185,16 +100,16 @@ children:
             name: InnerStructure
             valis:
               length: 0.281
-              mass: 0.5615399999999999
+              mass: 0.46054
         name: 02_ParaBrake_Module
         valis:
-          length: 0.281
-          mass: 2.62688
-          position: 0.55
+          length: 0.37
+          mass: 3.13054
+          position: 0.5
     name: A_Recovery_Module
     valis:
-      length: 0.8310000000000001
-      mass: 6.031879999999999
+      length: 0.87
+      mass: 6.0605400000000005
       position: 0.0
   4415:
     children:
@@ -276,14 +191,19 @@ children:
         children:
           4285:
             children: {}
-            name: PanelsAV
+            name: Panels
             valis:
-              mass: 0.36
+              mass: 0.3
           4294:
             children: {}
             name: PanelsPY
             valis:
-              mass: 0.24
+              mass: 0.2
+          4477:
+            children: {}
+            name: Screws
+            valis:
+              mass: 0.037200000000000004
           4478:
             children: {}
             name: Radonts
@@ -302,46 +222,16 @@ children:
             valis:
               length: 0.4
               mass: 0.088
-          4554:
-            children:
-              4555:
-                children: {}
-                name: InternalScrews
-                valis:
-                  mass: 0.037200000000000004
-              4556:
-                children: {}
-                name: ExternalScrews
-                valis:
-                  mass: 0.07200000000000001
-              4557:
-                children: {}
-                name: PanelScrews
-                valis:
-                  mass: 0.07200000000000001
-            name: Screws2
-            valis:
-              mass: 0.1812
-          4558:
-            children: {}
-            name: PanelMountsAV
-            valis:
-              mass: 0.12
-          4559:
-            children: {}
-            name: PanelMountsPY
-            valis:
-              mass: 0.09
-        name: AeroStructure
+        name: InnerStructure
         valis:
           length: 0.41400000000000003
-          mass: 1.4378000000000002
+          mass: 0.9838
           position: 0.0
     name: B_Payvionics_Module
     valis:
       length: 0.41400000000000003
-      mass: 3.9228
-      position: 0.8310000000000001
+      mass: 3.4688000000000003
+      position: 0.87
   4416:
     children:
       4271:
@@ -519,25 +409,10 @@ children:
           4466:
             children:
               4467:
-                children:
-                  4545:
-                    children: {}
-                    name: InternalScrews
-                    valis:
-                      mass: 0.037200000000000004
-                  4546:
-                    children: {}
-                    name: ExternalScrews
-                    valis:
-                      mass: 0.07200000000000001
-                  4551:
-                    children: {}
-                    name: PanelScrews
-                    valis:
-                      mass: 0.036000000000000004
+                children: {}
                 name: Screws
                 valis:
-                  mass: 0.1452
+                  mass: 0.037200000000000004
               4468:
                 children: {}
                 name: Radonts
@@ -556,20 +431,10 @@ children:
                 valis:
                   length: 0.15
                   mass: 0.033
-              4552:
-                children: {}
-                name: Panels
-                valis:
-                  mass: 0.24
-              4553:
-                children: {}
-                name: PanelMounts
-                valis:
-                  mass: 0.09
-            name: AeroStructure
+            name: Structure
             valis:
               length: 0.164
-              mass: 0.8728000000000001
+              mass: 0.4348
           4526:
             children: {}
             name: CrossConnectorNitrousOxide
@@ -628,7 +493,7 @@ children:
         name: 02_Top_Valvery
         valis:
           length: 0.164
-          mass: 3.0078
+          mass: 2.5698000000000003
           position: 0.315
       4491:
         children:
@@ -639,6 +504,11 @@ children:
               mass: 0.9
           4471:
             children:
+              4472:
+                children: {}
+                name: Screws
+                valis:
+                  mass: 0.1452
               4473:
                 children: {}
                 name: RadontTop
@@ -667,32 +537,12 @@ children:
                 children: {}
                 name: Panels
                 valis:
-                  mass: 0.36
+                  mass: 0.396
               4509:
                 children: {}
                 name: PanelMounts
                 valis:
                   mass: 0.12
-              4547:
-                children:
-                  4548:
-                    children: {}
-                    name: InternalScrews
-                    valis:
-                      mass: 0.037200000000000004
-                  4549:
-                    children: {}
-                    name: ExternalScrews
-                    valis:
-                      mass: 0.108
-                  4550:
-                    children: {}
-                    name: PanelScrews
-                    valis:
-                      mass: 0.036000000000000004
-                name: Screws
-                valis:
-                  mass: 0.1812
             name: AeroStructure
             valis:
               length: 0.264
@@ -765,9 +615,9 @@ children:
     name: C_Propulsion_Module
     valis:
       length: 2.118
-      mass: 21.614798511036177
-      position: 1.245
+      mass: 21.17679851103618
+      position: 1.284
 name: Rocket
 valis:
-  length: 3.363
-  mass: 31.569478511036177
+  length: 3.402
+  mass: 30.706138511036176

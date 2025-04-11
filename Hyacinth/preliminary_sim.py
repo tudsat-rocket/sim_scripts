@@ -6,12 +6,12 @@ import math
 import libs.data_handler as data_handler
 
 #FILES
-drag_pwr_off = "Hyacinth/data/drag/FrodoMPowerOffDrag.csv"
-drag_pwr_on = "Hyacinth/data/drag/FrodoMPowerOnDrag.csv"
+drag_pwr_off = "Hyacinth/data/drag/HyacinthPowerOffDrag.csv"
+drag_pwr_on = "Hyacinth/data/drag/HyacinthPowerOnDrag.csv"
 fin_lift = "Hyacinth/data/lift/naca_0008_final.csv"
 
 valispace_data = data_handler.load_data("Hyacinth/data/valispace/vali_sim_data.yaml")
-print(data_handler.center_of_mass(valispace_data))
+com = data_handler.center_of_mass(valispace_data)
 print(valispace_data["valis"]["length"])
 
 #set environment to actual launch site
@@ -92,17 +92,18 @@ hyacinth_motor.add_tank(
 #definition of values for inertia calculation; inertia calculation based on ideal cylinder
 #TODO change to actual parts, import from valispace
 height = valispace_data["valis"]["length"]
-mass = 23.727
+mass = valispace_data["valis"]["mass"]
 radius=0.075
+#old inertia ((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2)
+short_inertia, long_inertia = data_handler.inertia(valispace_data, com, radius)
 
 hyacinth = rocketpy.Rocket(
     radius=radius,
     mass=mass,
-    #TODO fix inertia
-    inertia=((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2),
+    inertia=(long_inertia, long_inertia, short_inertia),
     power_off_drag = drag_pwr_off,
     power_on_drag = drag_pwr_on,
-    center_of_mass_without_motor=1.82, #coordinate system same as OpenRocket and RasAero #TODO recalculate
+    center_of_mass_without_motor=com, #coordinate system same as OpenRocket and RasAero
     coordinate_system_orientation="nose_to_tail"
 )
 
@@ -133,23 +134,24 @@ hyacinth.add_trapezoidal_fins(
 
 #add boattail
 hyacinth.add_tail(
-    top_radius=0.075,
-    bottom_radius=0.06,
-    length=0.10,
-    position=height-0.10
+    top_radius=radius,
+    bottom_radius=0.116/2,
+    length=0.14,
+    position=height-0.14
 )
 
 #add main chute, values according to fruity chutes
 hyacinth.add_parachute(
     name="main",
-    cd_s=2.2*math.pi*0.914**2,
+    #cd_s=2.2*math.pi*0.914**2,
+    cd_s=2.2*math.pi*(2.1336/2)**2,
     trigger=400,
     sampling_rate=105,
     lag=0.1,
     noise=(0,0,0) #TODO
 )
 
-#add drogue chute, values according to fruity chutes 
+#add drogue chute, values according to fruity chutes
 #TODO change to whatever we are doing
 hyacinth.add_parachute(
     name="drogue",
