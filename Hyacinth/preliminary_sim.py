@@ -5,6 +5,8 @@ import math
 
 import libs.data_handler as data_handler
 
+#TODO fix drymasses for tank/motor by getting from valispace or setting to 0
+
 #FILES
 drag_pwr_off = "Hyacinth/data/drag/HyacinthPowerOffDrag.csv"
 drag_pwr_on = "Hyacinth/data/drag/HyacinthPowerOnDrag.csv"
@@ -14,14 +16,14 @@ valispace_data = data_handler.load_data("Hyacinth/data/valispace/vali_sim_data.y
 com = data_handler.center_of_mass(valispace_data)
 print(valispace_data["valis"]["length"])
 
-#set environment to actual launch site
+#euroc launch site
 launch_environment = rocketpy.Environment(
     latitude = 39.39011270334382,
     longitude = -8.28928771347388,
+    elevation = 160
 )
 
-#set time to within competition time frame
-#TODO more accurate
+#time within competition time frame (09/10-15/10, launches likely 10/10-14/10)
 launch_environment.set_date(
     (2025, 10, 12, 12), timezone="Europe/Lisbon"
 )
@@ -32,13 +34,15 @@ launch_environment.set_atmospheric_model(
     pressure=None,
     temperature=None,
     #TODO change this to historical wind
-    #TODO potenital pressure and temperature with custom atmosphere
+    #TODO potential pressure and temperature with custom atmosphere
     wind_u = -1.5,
     wind_v = -0.5,
 )
 
 #use OpenElevation for elevation data
-launch_environment.set_elevation("Open-Elevation")
+#launch_environment.set_elevation("Open-Elevation")
+
+#set to known elevation
 
 #set properties of Nitrous
 #TODO set density correctly for temp
@@ -48,17 +52,17 @@ liquid_N2O = rocketpy.Fluid(name="Liquid Nitrous Oxide", density=855)
 vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=58)
 
 #set tank size
-N2O_geometry = rocketpy.CylindricalTank(radius=0.138/2, height=0.545, spherical_caps=False)
+N2O_geometry = rocketpy.CylindricalTank(radius=0.138/2, height=0.750, spherical_caps=False)
 
 #tank
 N2O_tank = rocketpy.MassBasedTank(
     name = "Nitrous_Oxide_Tank",
     geometry = N2O_geometry,
-    flux_time = 25,
+    flux_time = 25,#TODO fix this, flux to fast
     gas = vapour_N,
     liquid = liquid_N2O,
     gas_mass = N2O_geometry.volume*0.1*vapour_N.density,
-    liquid_mass = 4.7,
+    liquid_mass = 6.3,#TODO get from valispace
     discretize=100,
 )
 
@@ -66,18 +70,18 @@ N2O_tank = rocketpy.MassBasedTank(
 #TODO fix all of this
 hyacinth_motor = rocketpy.HybridMotor(
     thrust_source=lambda t: 2500,
-    dry_mass=4.5,
-    #TODO inertia
-    dry_inertia=(0.125, 0.125, 0.002),
+    dry_mass=0.001,
+    #TODO inertia, figure out drymass
+    dry_inertia=(0.001, 0.001, 0.001),
     nozzle_radius=28.9e-3,
     grain_number=1,
     grain_separation=0,
     grain_outer_radius=0.057,
     grain_initial_inner_radius=0.0275,
     grain_initial_height=0.250,
-    grain_density=900,
+    grain_density=1180,
     grains_center_of_mass_position=0.245,
-    #TODO figure actual CoG out
+    #TODO figure actual CoG out, check mass
     center_of_dry_mass_position=0.245,
     nozzle_position=0,
     burn_time=5,
@@ -143,8 +147,8 @@ hyacinth.add_tail(
 #add main chute, values according to fruity chutes
 hyacinth.add_parachute(
     name="main",
-    #cd_s=2.2*math.pi*0.914**2,
-    cd_s=2.2*math.pi*(2.1336/2)**2,
+    cd_s=2.2*math.pi*0.914**2,
+    #cd_s=2.2*math.pi*(2.1336/2)**2,
     trigger=400,
     sampling_rate=105,
     lag=0.1,
@@ -173,24 +177,27 @@ euroc2025 = rocketpy.Flight(
 
 
 #PRINTS AND PLOTS
-launch_environment.prints.launch_site_details()
+#launch_environment.prints.launch_site_details()
 
 #printing values
-euroc2025.prints.maximum_values()
+if True:
+    euroc2025.prints.maximum_values()
 
-euroc2025.prints.out_of_rail_conditions()
+    euroc2025.prints.out_of_rail_conditions()
 
-euroc2025.prints.apogee_conditions()
+    euroc2025.prints.apogee_conditions()
 
-euroc2025.prints.impact_conditions()
+    euroc2025.prints.impact_conditions()
 
-euroc2025.prints.events_registered()
+    euroc2025.prints.events_registered()
 
+    hyacinth.prints.inertia_details()
 #plotting values
-hyacinth.plots.static_margin()
+if True:
+    hyacinth.plots.static_margin()
 
-hyacinth.draw()
+    hyacinth.draw()
 
-euroc2025.plots.trajectory_3d()
+    #euroc2025.plots.trajectory_3d()
 
-euroc2025.plots.linear_kinematics_data()
+    euroc2025.plots.linear_kinematics_data()
