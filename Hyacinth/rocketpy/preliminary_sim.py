@@ -8,11 +8,11 @@ import libs.data_handler as data_handler
 #TODO fix drymasses for tank/motor by getting from valispace or setting to 0
 
 #FILES
-drag_pwr_off = "Hyacinth/data/drag/HyacinthPowerOffDrag.csv"
-drag_pwr_on = "Hyacinth/data/drag/HyacinthPowerOnDrag.csv"
-fin_lift = "Hyacinth/data/lift/naca_0008_final.csv"
+drag_pwr_off = "Hyacinth/rocketpy/data/drag/HyacinthPowerOffDrag.csv"
+drag_pwr_on = "Hyacinth/rocketpy/data/drag/HyacinthPowerOnDrag.csv"
+fin_lift = "Hyacinth/rocketpy/data/lift/naca_0008_final.csv"
 
-valispace_data = data_handler.load_data("Hyacinth/data/valispace/vali_sim_data.yaml")
+valispace_data = data_handler.load_data("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml")
 com = data_handler.center_of_mass(valispace_data)
 print(valispace_data["valis"]["length"])
 
@@ -99,12 +99,12 @@ height = valispace_data["valis"]["length"]
 mass = valispace_data["valis"]["mass"]
 radius=0.075
 #old inertia ((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2)
-short_inertia, long_inertia = data_handler.inertia(valispace_data, com, radius)
+inertia_axial, inertia_radial = data_handler.inertia(valispace_data, com, radius)
 
 hyacinth = rocketpy.Rocket(
     radius=radius,
     mass=mass,
-    inertia=(long_inertia, long_inertia, short_inertia),
+    inertia=(inertia_radial, inertia_radial, inertia_axial),
     power_off_drag = drag_pwr_off,
     power_on_drag = drag_pwr_on,
     center_of_mass_without_motor=com, #coordinate system same as OpenRocket and RasAero

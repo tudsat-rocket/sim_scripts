@@ -97,10 +97,12 @@ sim_valis = [{key: vali[key] for key in vali.keys() if key in allowed_keys_valis
 
 out_dict = get_rec_components(4256)
 
-with open("Hyacinth/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
+with open("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
 
 date_string = "{:%Y%m%d_%H%M%S}".format(datetime.datetime.now())
 
-with open("Hyacinth/data/valispace/" + date_string + "_vali_sim_data.yaml", "w", encoding="utf-8") as file:
+with open("Hyacinth/rocketpy/data/valispace/" + date_string + "_vali_sim_data.yaml", "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
+
+    print("Successfully retrieved data.")

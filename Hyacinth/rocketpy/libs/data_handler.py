@@ -30,8 +30,8 @@ def center_of_mass(data):
     return mass_radius_sum/mass_sum
 
 def inertia(data, com, radius):
-    inertia_short = 0
-    inertia_long = 0
+    inertia_axial = 0
+    inertia_radial = 0
 
     for module in data["children"].values():
         module_position = module["valis"]["position"]
@@ -40,13 +40,13 @@ def inertia(data, com, radius):
             submodule_com = module_position + submodule["valis"]["position"] + (submodule_length/2)
             submodule_mass = submodule["valis"]["mass"]
             #add cylinder inertia along axis to short inertia
-            inertia_short += 0.5 * submodule_mass * radius**2
+            inertia_axial += 0.5 * submodule_mass * radius**2
 
             #add cylinder inertia perpendicular to axis to long inertia
-            inertia_long += (radius**2/4 + submodule_length**2/12)*submodule_mass
+            inertia_radial += (radius**2/4 + submodule_length**2/12)*submodule_mass
 
             #add steinerscher bullshit to long inertia
-            inertia_long += submodule_mass * abs(submodule_com-com)**2
+            inertia_radial += submodule_mass * abs(submodule_com-com)**2
 
-    return (inertia_short, inertia_long)
+    return (inertia_axial, inertia_radial)
 
