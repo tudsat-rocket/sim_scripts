@@ -14,39 +14,67 @@ def center_of_mass(data):
     mass_radius_sum = 0
     mass_sum = 0
 
-    for module in data["children"].values():
-        module_position = module["valis"]["position"]
-        for submodule in module["children"].values():
-            #position realative to parent module, length/2 is center of submodule
-            submodule_com = module_position + submodule["valis"]["position"] + (submodule["valis"]["length"]/2)
-            submodule_mass = submodule["valis"]["mass"]
-            mass_radius_sum += submodule_com * submodule_mass
-            mass_sum += submodule_mass
-
-    #Check for valispace errors
-    if abs(mass_sum - data["valis"]["mass"]) > 0.001:
-        print(f"Mass mismatch in data: rocket mass {data['valis']['mass']} kg, submodule mass sum {mass_sum} kg")
+    for child in data["components"].values():
+        child_mass_sum, child_mass_radius_sum = com_rec(child)
+        mass_sum += child_mass_sum
+        mass_radius_sum += child_mass_radius_sum
 
     return mass_radius_sum/mass_sum
+
+def com_rec(comp):
+    #calulate own mass and mass * radius
+    if comp["children"] == {}:
+        return (comp["valis"]["mass"], comp["valis"]["mass"] * (comp["valis"]["position"] + comp["valis"]["length"]/2))
+    #if children, use them instead
+    else:
+        mass_sum = 0
+        mass_radius_sum = 0
+        for child in comp["children"].values():
+            child_mass_sum, child_mass_radius_sum = com_rec(child)
+            mass_sum += child_mass_sum
+            mass_radius_sum += child_mass_radius_sum
+
+        #report mass mismatches
+        if abs(mass_sum - comp["valis"]["mass"]) > 0.001:
+            print(f"Mass mismatch in data: component {comp['name']} mass {comp['valis']['mass']} kg, children mass sum {mass_sum} kg")
+        return (mass_sum, mass_radius_sum)
+
 
 def inertia(data, com, radius):
     inertia_axial = 0
     inertia_radial = 0
 
-    for module in data["children"].values():
-        module_position = module["valis"]["position"]
-        for submodule in module["children"].values():
-            submodule_length = submodule["valis"]["length"]
-            submodule_com = module_position + submodule["valis"]["position"] + (submodule_length/2)
-            submodule_mass = submodule["valis"]["mass"]
-            #add cylinder inertia along axis to short inertia
-            inertia_axial += 0.5 * submodule_mass * radius**2
-
-            #add cylinder inertia perpendicular to axis to long inertia
-            inertia_radial += (radius**2/4 + submodule_length**2/12)*submodule_mass
-
-            #add steinerscher bullshit to long inertia
-            inertia_radial += submodule_mass * abs(submodule_com-com)**2
+    for comp in data["components"].values():
+        comp_in_ax, comp_in_rad = inertia_rec(comp, com, radius)
+        inertia_axial += comp_in_ax
+        inertia_radial += comp_in_rad
 
     return (inertia_axial, inertia_radial)
+
+def inertia_rec(comp, com, radius):
+
+    if comp["children"] == {}:
+        comp_length = comp["valis"]["length"]
+        comp_com = comp["valis"]["position"] + (comp["valis"]["length"]/2)
+        comp_mass = comp["valis"]["mass"]
+
+        #axial inertia (cylinder)
+        in_ax = 0.5 * comp_mass * radius**2
+
+        #radial inertia (cylinder)
+        in_rad = (radius**2/4 + comp_length**2/12) * comp_mass
+
+        #steinerscher bullshit
+        in_rad += comp_mass * abs(comp_com-com)**2
+
+    else:
+        in_ax = 0
+        in_rad = 0
+
+        for child in comp["children"].values():
+            child_in_ax, child_in_rad = inertia_rec(child, com, radius)
+            in_ax += child_in_ax
+            in_rad += child_in_rad
+
+    return (in_ax, in_rad)
 

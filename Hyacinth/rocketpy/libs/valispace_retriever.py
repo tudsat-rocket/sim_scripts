@@ -24,42 +24,40 @@ import yaml
 
 import datetime
 
-username = "manuel.schluesener@tudsat.space"
-
 allowed_keys_sim = ["length", "mass", "position"]
 
-def clean_units(value, unit, data_type):
+extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_length", "inclination", "heading"],
+              "Rocket": ["length", "mass", "radius"],
+              "C_Propulsion_Module": ["thrust", "time_burn"],
+              "SolidFuel": ["mass_fuel", "outer_diameter", "inner_diameter", "length", "density"],
+              "FinCan": ["fins_root_chord", "fins_tip_chord", "fins_span", "fins_sweep_length", "boattail_bottom_radius", "boattail_length"],
+              "NitrousOxide": ["density", "mass_oxidizer"],
+              "OxidizerTank": ["inner_height", "inner_diameter"],
+              "Nitrogen": ["mass_pressurant"]}
+
+conversion_factors = {"mm": 1e-3, "cm": 1e-2, "dm": 1e-1, "m": 1, "km": 1e3,
+                      "mg": 1e-6, "g": 1e-3, "kg": 1, "t": 1e3,
+                      "ms": 1e-3, "s": 1, "min": 60, "h": 3600, "d": 86400,
+                      "mN": 1e-3, "N": 1, "kN": 1e3,
+                      "g/cm³": 1e3, "g/cm^3": 1e3, "kg/m³": 1, "kg/m^3": 1,
+                      "deg": 1,
+                      "": 1}
+
+#converts units into SI base units
+def clean_units(value, unit):
     conv_factor = 1
-    if data_type in ["position", "length"]:
-        match unit:
-            case "um":
-                conv_factor = 1e-6
-            case "mm":
-                conv_factor = 1e-3
-            case "cm":
-                conv_factor = 1e-2
-            case "dm":
-                conv_factor = 1e-1
-            case "m":
-                conv_factor = 1
-            case "km":
-                conv_factor = 1e3
-    elif data_type in ["mass"]:
-        match unit:
-            case "mg":
-                conv_factor = 1e-6
-            case "g":
-                conv_factor = 1e-3
-            case "kg":
-                conv_factor = 1
-            case "t":
-                conv_factor = 1e3
+    if unit in conversion_factors:
+        conv_factor = conversion_factors[unit]
+    else:
+        print(f"Unknown unit, assuming SI compliant: {unit}")
 
     return value*conv_factor
 
+#gets valis for a component with a certain id
 def get_valis(id):
-    return {vali["shortname"]: clean_units(vali["value"], vali["unit"], vali["shortname"]) for vali in sim_valis if vali["parent"] == id and vali["shortname"] in allowed_keys_sim}
+    return {vali["shortname"]: clean_units(vali["value"], vali["unit"]) for vali in sim_valis if vali["parent"] == id and vali["shortname"] in allowed_keys_sim}
 
+#builds component tree recursively
 def get_rec_components(id):
     current_comp = sim_comps[id]
 
@@ -67,8 +65,36 @@ def get_rec_components(id):
 
     return {"name": current_comp["name"], "valis": get_valis(id), "children": children}
 
+#makes sure every component has mass, position and length
+#as well as making position absolute
+def make_pos_abs(comp, parent_pos, parent_length):
+    #get cases where pos and/or length aren't defined
+    #presumed position is centered within parent and length 0
+    if "position" in comp["valis"]:
+        current_pos = parent_pos + comp["valis"]["position"]
+    elif "length" in comp["valis"]:
+        current_pos = parent_pos + parent_length/2 - comp["valis"]["length"]/2
+    else:
+        current_pos = parent_pos + parent_length/2
+
+    if "length" in comp["valis"]:
+        current_length = comp["valis"]["length"]
+    else:
+        current_length = 0
+
+    #good old recursion
+    for child_comp in comp["children"].values():
+        make_pos_abs(child_comp, current_pos, current_length)
+
+    comp["valis"]["position"] = current_pos
+    comp["valis"]["length"] = current_length
+
+    if not "mass" in comp["valis"]:
+        comp["valis"]["mass"] = 0
 
 #LOGIN
+username = input("Enter valispace username: ")
+
 hidden_input = getpass.getpass("Enter valispace password: ")
 
 pwd = hidden_input
@@ -95,8 +121,23 @@ allowed_keys_valis = ["path", "id", "description", "shortname", "parent",
 
 sim_valis = [{key: vali[key] for key in vali.keys() if key in allowed_keys_valis} for vali in valis]
 
+#CLEANUP
 out_dict = get_rec_components(4256)
+out_dict["valis"]["position"] = 0
 
+make_pos_abs(out_dict, 0, 0)
+
+out_dict.pop("valis")
+out_dict["components"] = out_dict.pop("children")
+out_dict.pop("name")
+
+#ADD EXTRA INFO
+for comp_name in extra_info:
+    comp_id = [cmp["id"] for cmp in sim_comps.values() if cmp["name"] == comp_name][0]
+    comp_valis = {vali["shortname"]: clean_units(vali["value"], vali["unit"]) for vali in sim_valis if vali["parent"] == comp_id and vali["shortname"] in extra_info[comp_name]}
+    out_dict[comp_name] = comp_valis
+
+#WRITE
 with open("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
 

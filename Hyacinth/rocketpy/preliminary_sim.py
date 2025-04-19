@@ -13,14 +13,12 @@ drag_pwr_on = "Hyacinth/rocketpy/data/drag/HyacinthPowerOnDrag.csv"
 fin_lift = "Hyacinth/rocketpy/data/lift/naca_0008_final.csv"
 
 valispace_data = data_handler.load_data("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml")
-com = data_handler.center_of_mass(valispace_data)
-print(valispace_data["valis"]["length"])
 
 #euroc launch site
 launch_environment = rocketpy.Environment(
-    latitude = 39.39011270334382,
-    longitude = -8.28928771347388,
-    elevation = 160
+    latitude = valispace_data["LaunchEnvironment"]["latitude"],
+    longitude = valispace_data["LaunchEnvironment"]["longitude"],
+    elevation = valispace_data["LaunchEnvironment"]["elevation"]
 )
 
 #time within competition time frame (09/10-15/10, launches likely 10/10-14/10)
@@ -39,20 +37,19 @@ launch_environment.set_atmospheric_model(
     wind_v = -0.5,
 )
 
-#use OpenElevation for elevation data
+#currently unused: OpenElevation for elevation data
 #launch_environment.set_elevation("Open-Elevation")
-
-#set to known elevation
 
 #set properties of Nitrous
 #TODO set density correctly for temp
-liquid_N2O = rocketpy.Fluid(name="Liquid Nitrous Oxide", density=855)
+liquid_N2O = rocketpy.Fluid(name="Liquid Nitrous Oxide", density = valispace_data["NitrousOxide"]["density"])
 
 #properties of nitrogen, density at 18°C and 50 bar
+#TODO get correct density or switch model to not use constant density
 vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=58)
 
 #set tank size
-N2O_geometry = rocketpy.CylindricalTank(radius=0.138/2, height=0.750, spherical_caps=False)
+N2O_geometry = rocketpy.CylindricalTank(radius = valispace_data["OxidizerTank"]["inner_diameter"]/2, height = valispace_data["OxidizerTank"]["inner_height"], spherical_caps=False)
 
 #tank
 N2O_tank = rocketpy.MassBasedTank(
@@ -61,44 +58,44 @@ N2O_tank = rocketpy.MassBasedTank(
     flux_time = 25,#TODO fix this, flux to fast
     gas = vapour_N,
     liquid = liquid_N2O,
-    gas_mass = N2O_geometry.volume*0.1*vapour_N.density,
-    liquid_mass = 6.3,#TODO get from valispace
+    gas_mass = 0, #N2O_geometry.volume*0.1*vapour_N.density
+    liquid_mass = valispace_data["NitrousOxide"]["mass_oxidizer"],
     discretize=100,
 )
 
 #MOTOR
 #TODO fix all of this
 hyacinth_motor = rocketpy.HybridMotor(
-    thrust_source=lambda t: 2500,
-    dry_mass=0.001,
-    #TODO inertia, figure out drymass
-    dry_inertia=(0.001, 0.001, 0.001),
-    nozzle_radius=28.9e-3,
+    thrust_source=lambda t: valispace_data["C_Propulsion_Module"]["thrust"],
+    dry_mass=valispace_data["Nitrogen"]["mass_pressurant"], #temporarily adding mass of nitrogen here
+    dry_inertia=(0, 0, 0),
+    nozzle_radius=28.9e-3, #TODO import this
     grain_number=1,
     grain_separation=0,
-    grain_outer_radius=0.057,
-    grain_initial_inner_radius=0.0275,
-    grain_initial_height=0.250,
-    grain_density=1180,
-    grains_center_of_mass_position=0.245,
+    grain_outer_radius=valispace_data["SolidFuel"]["outer_diameter"]/2,
+    grain_initial_inner_radius=valispace_data["SolidFuel"]["inner_diameter"]/2,
+    grain_initial_height=valispace_data["SolidFuel"]["length"],
+    grain_density=valispace_data["SolidFuel"]["density"],
+    grains_center_of_mass_position=0.245, #TODO define and import this
     #TODO figure actual CoG out, check mass
-    center_of_dry_mass_position=0.245,
+    center_of_dry_mass_position=1.5, #temporarily changed to roughly represent com of nitrogen
     nozzle_position=0,
-    burn_time=5,
-    throat_radius=0.015,
+    burn_time=valispace_data["C_Propulsion_Module"]["time_burn"],
+    throat_radius=0.015, #TODO import this
 )
 
 hyacinth_motor.add_tank(
     tank=N2O_tank,
-    position=1, #TODO
+    position=1, #TODO import this
 )
 
-#definition of values for inertia calculation; inertia calculation based on ideal cylinder
-#TODO change to actual parts, import from valispace
-height = valispace_data["valis"]["length"]
-mass = valispace_data["valis"]["mass"]
-radius=0.075
-#old inertia ((mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*0.5*(radius**2+(height**2/3)), (mass/2)*radius**2)
+#TODO add nitrogen tank?
+
+#definition of values for inertia calculation; inertia calculation based on ideal cylinders
+height = valispace_data["Rocket"]["length"]
+mass = valispace_data["Rocket"]["mass"]
+com = data_handler.center_of_mass(valispace_data)
+radius = valispace_data["Rocket"]["radius"]
 inertia_axial, inertia_radial = data_handler.inertia(valispace_data, com, radius)
 
 hyacinth = rocketpy.Rocket(
@@ -112,15 +109,15 @@ hyacinth = rocketpy.Rocket(
 )
 
 buttons = hyacinth.set_rail_buttons(
-    upper_button_position=1.90, #TODO
-    lower_button_position=2.95, #TODO
+    upper_button_position=1.90, #TODO import this
+    lower_button_position=2.95, #TODO import this
 )
 
 hyacinth.add_motor(hyacinth_motor, position=height)
-#add von karman nose cone
 
+#add von karman nose cone
 hyacinth.add_nose(
-    length=0.45,
+    length=0.45,#TODO import this
     kind="von karman",
     position=0,
 )
@@ -128,23 +125,24 @@ hyacinth.add_nose(
 #add fin set
 hyacinth.add_trapezoidal_fins(
     n=3,
-    root_chord=0.240,
-    tip_chord=0.160,
-    span=0.150,
-    position=height-0.240,
-    sweep_length=0.060,
+    root_chord=valispace_data["FinCan"]["fins_root_chord"],
+    tip_chord=valispace_data["FinCan"]["fins_tip_chord"],
+    span=valispace_data["FinCan"]["fins_span"],
+    position=height-valispace_data["FinCan"]["fins_root_chord"],
+    sweep_length=valispace_data["FinCan"]["fins_sweep_length"],
     airfoil=(fin_lift,"degrees")
 )
 
 #add boattail
 hyacinth.add_tail(
     top_radius=radius,
-    bottom_radius=0.116/2,
-    length=0.14,
-    position=height-0.14
+    bottom_radius=valispace_data["FinCan"]["boattail_bottom_radius"],
+    length=valispace_data["FinCan"]["boattail_length"],
+    position=height-valispace_data["FinCan"]["boattail_length"]
 )
 
 #add main chute, values according to fruity chutes
+#TODO define and import
 hyacinth.add_parachute(
     name="main",
     cd_s=2.2*math.pi*0.914**2,
@@ -152,7 +150,7 @@ hyacinth.add_parachute(
     trigger=400,
     sampling_rate=105,
     lag=0.1,
-    noise=(0,0,0) #TODO
+    noise=(0,0,0)
 )
 
 #add drogue chute, values according to fruity chutes
@@ -163,16 +161,16 @@ hyacinth.add_parachute(
     trigger="apogee",
     sampling_rate=105,
     lag=1,
-    noise=(0,0,0) #TODO
+    noise=(0,0,0)
 )
 
 #define launch, values according to Euroc
 euroc2025 = rocketpy.Flight(
         environment=launch_environment,
         rocket=hyacinth,
-        rail_length=12,
-        inclination=84,
-        heading=133,
+        rail_length=valispace_data["LaunchEnvironment"]["rail_length"],
+        inclination=valispace_data["LaunchEnvironment"]["inclination"],
+        heading=valispace_data["LaunchEnvironment"]["heading"],
         )
 
 

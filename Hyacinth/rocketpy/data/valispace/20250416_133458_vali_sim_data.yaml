@@ -1,39 +1,4 @@
-C_Propulsion_Module:
-  thrust: 2500.0
-  time_burn: 5.0
-FinCan:
-  boattail_bottom_radius: 0.057
-  boattail_length: 0.14
-  fins_root_chord: 0.24
-  fins_span: 0.15
-  fins_sweep_length: 0.06
-  fins_tip_chord: 0.16
-LaunchEnvironment:
-  elevation: 160.0
-  heading: 133.0
-  inclination: 84.0
-  latitude: 39.39011270334382
-  longitude: -8.28928771347388
-  rail_length: 12.0
-Nitrogen:
-  mass_pressurant: 0.75
-NitrousOxide:
-  density: 879.9999999999999
-  mass_oxidizer: 6.248261108933384
-OxidizerTank:
-  inner_diameter: 0.14
-  inner_height: 0.5073681842936716
-Rocket:
-  length: 3.1903681842936717
-  mass: 30.801110890261818
-  radius: 0.075
-SolidFuel:
-  density: 887.7273715581908
-  inner_diameter: 0.04
-  length: 0.28
-  mass_fuel: 1.34
-  outer_diameter: 0.092
-components:
+children:
   4414:
     children:
       4264:
@@ -499,16 +464,16 @@ components:
                 children: {}
                 name: BulkheadTop
                 valis:
-                  length: 0.05
+                  length: 0
                   mass: 1.0
-                  position: 2.122684092146836
+                  position: 2.147684092146836
               4310:
                 children: {}
                 name: BulkheadBottom
                 valis:
-                  length: 0.05
+                  length: 0
                   mass: 1.0
-                  position: 2.122684092146836
+                  position: 2.147684092146836
               4525:
                 children: {}
                 name: Sensors
@@ -516,10 +481,10 @@ components:
                   length: 0
                   mass: 0.08
                   position: 2.147684092146836
-            name: OxidizerTank
+            name: Tank
             valis:
               length: 0.6073681842936716
-              mass: 5.8151124560057905
+              mass: 5.7351124560057904
               position: 1.844
           4279:
             children: {}
@@ -538,7 +503,7 @@ components:
         name: 03_Oxidizer_Tank
         valis:
           length: 0.6073681842936716
-          mass: 5.915112456005791
+          mass: 5.835112456005791
           position: 1.844
       4272:
         children:
@@ -649,14 +614,7 @@ components:
                   length: 0
                   mass: 0.02
                   position: 2.9528681842936715
-              4580:
-                children: {}
-                name: Bulkhead
-                valis:
-                  length: 0
-                  mass: 0.516
-                  position: 2.9528681842936715
-            name: BulkheadAssembly
+            name: Bulkhead
             valis:
               length: 0
               mass: 0.536
@@ -1054,5 +1012,10 @@ components:
     name: C_Propulsion_Module
     valis:
       length: 1.9453681842936716
-      mass: 20.846430890261818
+      mass: 20.76643089026182
       position: 1.245
+name: Rocket
+rocket:
+  length: 3.1903681842936717
+  mass: 30.72111089026182
+  position: 0
