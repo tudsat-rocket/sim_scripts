@@ -36,3 +36,27 @@ def net_section_sv(bolts, tube, F_ax):
     A = (math.pi * d_m * s) - (n * d * s)
     s_v = (R_m * A) / F_ax
     return s_v
+
+def burst_sv(tube, p):
+    R_p = tube["yield_strength"]
+    s = tube["wall_strength"]
+    D = tube["outer_diameter"]
+
+    s_v = (2 * s * R_p) / (p * D)
+    return s_v
+
+def burst_p(tube):
+    R_p = tube["yield_strength"]
+    s = tube["wall_strength"]
+    D = tube["outer_diameter"]
+
+    p_burst = (2 * R_p * s) / D
+    return p_burst
+
+def s_min(tube, s_v, p):
+    R_p = tube["yield_strength"]
+    s = tube["wall_strength"]
+    D = tube["outer_diameter"]
+
+    s_min = (p * D * s_v) / (2 * R_p)
+    return s_min
