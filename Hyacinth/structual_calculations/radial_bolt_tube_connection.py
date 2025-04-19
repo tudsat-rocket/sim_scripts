@@ -3,23 +3,33 @@ import math
 import libs.bolt_calc as bolt_calc
 import libs.tube_calc as tube_calc
 
+###
+# Radial Bolt Tube Connection Calculator
+#   Calculates the safeties of a radial tube bolt connection against 4 common failure modes, using approximating formulas for bolt - sheet metal connections 
+#   and prints them into console.
+#   The tested failure modes are
+#       Shearing of fastener
+#       Shear tearout from tube
+#       Bearing failure of bolt hole in tube
+#       Net Section failure of remaining tube cross section
+###
 
 ## Set values for the calculation here:
 #   Tube:
 tube = {
-    "outer_diameter": 150e-3,  # [m]
-    "wall_strength": 5e-3,     # [m]
+    "outer_diameter": 108e-3,  # [m]
+    "wall_strength": 4e-3,     # [m]
     "length": 630e-3,          # [m]
-    "ultimate_strength": 350e6,   # "Festigkeit" [Pa]
-    "yield_strength": 255e6,    # "Streckgrenze" [Pa]
-    "ultimate_shear_strength": 210e6,  # "Scherfestigkeit" [Pa]
-    "bolt_hole_edge_distance": 15e-3   # distance from edge to hole center [m]
+    "ultimate_strength": 255e6,   # "Festigkeit" [Pa]
+    "yield_strength": 160e6,    # "Streckgrenze" [Pa]
+    "ultimate_shear_strength": 150e6,  # "Scherfestigkeit" [Pa]
+    "bolt_hole_edge_distance": 10e-3   # distance from edge to hole center [m]
 }
 
 #   Bolts:
 bolts = {
-    "count": 10,               # []
-    "diameter": 8e-3,          # [m]
+    "count": 7,               # []
+    "diameter": 10e-3,          # [m]
     "thread_inner_diameter": 6.78e-3, # [m]
     "shoulder_diameter": 10e-3, # [m]
     "total_length": 30e-3,     # [m]
@@ -32,7 +42,7 @@ bolts = {
 S_v = 4  #specify required safety value here
 
 #   Load Case
-F_ax = 89573 # axial Load [N]
+F_ax = 19900 # axial Load [N]
 
 
 ## Precalculations, do not change
