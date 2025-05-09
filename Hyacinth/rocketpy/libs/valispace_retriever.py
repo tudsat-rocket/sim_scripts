@@ -33,7 +33,8 @@ extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_
               "FinCan": ["fins_root_chord", "fins_tip_chord", "fins_span", "fins_sweep_length", "boattail_bottom_radius", "boattail_length"],
               "NitrousOxide": ["density", "mass_oxidizer"],
               "OxidizerTank": ["inner_height", "inner_diameter"],
-              "Nitrogen": ["mass_pressurant"]}
+              "Nitrogen": ["mass_pressurant"],
+              "Nozzle": ["exit_diameter", "throat_diameter"]}
 
 conversion_factors = {"mm": 1e-3, "cm": 1e-2, "dm": 1e-1, "m": 1, "km": 1e3,
                       "mg": 1e-6, "g": 1e-3, "kg": 1, "t": 1e3,

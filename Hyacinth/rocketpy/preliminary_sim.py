@@ -52,24 +52,28 @@ vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=58)
 N2O_geometry = rocketpy.CylindricalTank(radius = valispace_data["OxidizerTank"]["inner_diameter"]/2, height = valispace_data["OxidizerTank"]["inner_height"], spherical_caps=False)
 
 #tank
-N2O_tank = rocketpy.MassBasedTank(
+N2O_tank = rocketpy.MassFlowRateBasedTank(
     name = "Nitrous_Oxide_Tank",
     geometry = N2O_geometry,
-    flux_time = 25,#TODO fix this, flux to fast
+    flux_time = 5,
     gas = vapour_N,
     liquid = liquid_N2O,
-    gas_mass = 0, #N2O_geometry.volume*0.1*vapour_N.density
-    liquid_mass = valispace_data["NitrousOxide"]["mass_oxidizer"],
+    initial_gas_mass = 0, #N2O_geometry.volume*0.1*vapour_N.density
+    initial_liquid_mass = valispace_data["NitrousOxide"]["mass_oxidizer"],
+    liquid_mass_flow_rate_in = 0,
+    liquid_mass_flow_rate_out = valispace_data["NitrousOxide"]["mass_oxidizer"]/valispace_data["C_Propulsion_Module"]["time_burn"],
+    gas_mass_flow_rate_in = 0,
+    gas_mass_flow_rate_out = 0,
     discretize=100,
 )
 
 #MOTOR
 #TODO fix all of this
 hyacinth_motor = rocketpy.HybridMotor(
-    thrust_source=lambda t: valispace_data["C_Propulsion_Module"]["thrust"],
+    thrust_source=lambda t: valispace_data["C_Propulsion_Module"]["thrust"]-t*120,
     dry_mass=valispace_data["Nitrogen"]["mass_pressurant"], #temporarily adding mass of nitrogen here
     dry_inertia=(0, 0, 0),
-    nozzle_radius=28.9e-3, #TODO import this
+    nozzle_radius=valispace_data["Nozzle"]["exit_diameter"]/2,
     grain_number=1,
     grain_separation=0,
     grain_outer_radius=valispace_data["SolidFuel"]["outer_diameter"]/2,
@@ -81,7 +85,7 @@ hyacinth_motor = rocketpy.HybridMotor(
     center_of_dry_mass_position=1.5, #temporarily changed to roughly represent com of nitrogen
     nozzle_position=0,
     burn_time=valispace_data["C_Propulsion_Module"]["time_burn"],
-    throat_radius=0.015, #TODO import this
+    throat_radius=valispace_data["Nozzle"]["throat_diameter"]/2,
 )
 
 hyacinth_motor.add_tank(
@@ -89,7 +93,7 @@ hyacinth_motor.add_tank(
     position=1, #TODO import this
 )
 
-#TODO add nitrogen tank?
+#TODO add nitrogen tank
 
 #definition of values for inertia calculation; inertia calculation based on ideal cylinders
 height = valispace_data["Rocket"]["length"]
@@ -190,6 +194,8 @@ if True:
     euroc2025.prints.events_registered()
 
     hyacinth.prints.inertia_details()
+
+    #hyacinth.all_info()
 #plotting values
 if True:
     hyacinth.plots.static_margin()
@@ -199,3 +205,5 @@ if True:
     #euroc2025.plots.trajectory_3d()
 
     euroc2025.plots.linear_kinematics_data()
+
+    hyacinth.plots.total_mass()
