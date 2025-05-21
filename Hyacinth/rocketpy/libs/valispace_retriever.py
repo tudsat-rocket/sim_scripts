@@ -6,7 +6,7 @@ Valispace API retriever for Sim
 
 install libraries with
     "pip install valispace"
-    "pip install yaml"
+    "pip install pyyaml"
 
 
 More info on API:
