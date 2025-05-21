@@ -6,7 +6,7 @@ put your username a.k.a. email in line 30
 
 install libraries with
     "pip install valispace"
-    "pip install yaml"
+    "pip install pyyaml"
 
 
 More info on API:
@@ -76,6 +76,16 @@ allowed_keys_requirements = ["title", "identifier", "specification", "id", "grou
                              "linked_components",  "verification_items", "verification_methods", "verified", 
                              "rationale", "text",]
 requirements = [{key: req[key] for key in req.keys() if key in allowed_keys_requirements} for req in requirements]
+
+#req->req_vm->comp_vm comp vms actually do stuff
+req_vms = valispace.get(url="requirements/requirement-vms/", data={"project": "42"})
+
+comp_vms = valispace.get(url="requirements/component-vms/", data={"project": "42"})
+
+vms = valispace.get(url="requirements/verification-methods/", data={"project": "42"})
+
+with open(date_string+"_vali_vms.yaml", "w", encoding="utf-8") as file:
+    yaml.dump(vms, file)
 
 req_tree_dict = {folder["name"]: 
                 {spec["name"]:
