@@ -34,7 +34,10 @@ extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_
               "NitrousOxide": ["density", "mass_oxidizer"],
               "OxidizerTank": ["inner_height", "inner_diameter"],
               "Nitrogen": ["mass_pressurant"],
-              "Nozzle": ["exit_diameter", "throat_diameter"]}
+              "Nozzle": ["exit_diameter", "throat_diameter"],
+              "NoseCone": ["conical_length"]}
+
+com_list = ["OxidizerTank", "PressurantTank", "SolidFuel", "RailButtonFront", "RailButtonRear"]
 
 conversion_factors = {"mm": 1e-3, "cm": 1e-2, "dm": 1e-1, "m": 1, "km": 1e3,
                       "mg": 1e-6, "g": 1e-3, "kg": 1, "t": 1e3,
@@ -93,6 +96,9 @@ def make_pos_abs(comp, parent_pos, parent_length):
     if not "mass" in comp["valis"]:
         comp["valis"]["mass"] = 0
 
+    if comp["name"] in com_list:
+        out_dict[comp["name"]] = {"CoM": current_pos + current_length/2}
+
 #LOGIN
 username = input("Enter valispace username: ")
 
@@ -136,7 +142,10 @@ out_dict.pop("name")
 for comp_name in extra_info:
     comp_id = [cmp["id"] for cmp in sim_comps.values() if cmp["name"] == comp_name][0]
     comp_valis = {vali["shortname"]: clean_units(vali["value"], vali["unit"]) for vali in sim_valis if vali["parent"] == comp_id and vali["shortname"] in extra_info[comp_name]}
-    out_dict[comp_name] = comp_valis
+    if comp_name in out_dict.keys():
+        out_dict[comp_name] = out_dict[comp_name] | comp_valis
+    else:
+        out_dict[comp_name] = comp_valis
 
 #WRITE
 with open("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
