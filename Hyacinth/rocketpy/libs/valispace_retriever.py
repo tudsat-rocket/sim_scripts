@@ -34,6 +34,7 @@ extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_
               "NitrousOxide": ["density", "mass_oxidizer"],
               "OxidizerTank": ["inner_height", "inner_diameter"],
               "Nitrogen": ["mass_pressurant"],
+              "PressurantTank": ["inner_height", "inner_diameter"],
               "Nozzle": ["exit_diameter", "throat_diameter"],
               "NoseCone": ["conical_length"]}
 

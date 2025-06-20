@@ -37,22 +37,26 @@ launch_environment.set_atmospheric_model(
     wind_u = 0,
     wind_v = -3,
 )
-
-#set properties of Nitrous
+#TANKS
+#set properties of Nitrous Oxide
 liquid_N2O = rocketpy.Fluid(name="Liquid Nitrous Oxide", density = valis["NitrousOxide"]["density"])
 
-#properties of nitrogen, density at 18°C and 50 bar, currently unused
-vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=58)
+#properties of Nitrogen
+vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=1200)
 
-#set tank size
-N2O_geometry = rocketpy.CylindricalTank(radius = valis["OxidizerTank"]["inner_diameter"]/2, height = valis["OxidizerTank"]["inner_height"], spherical_caps=False)
+#set oxidizer tank geometry
+ox_tank_geometry = rocketpy.CylindricalTank(
+    radius = valis["OxidizerTank"]["inner_diameter"]/2,
+    height = valis["OxidizerTank"]["inner_height"],
+    spherical_caps=False
+)
 
-#tank
-N2O_tank = rocketpy.MassFlowRateBasedTank(
-    name = "Nitrous_Oxide_Tank",
-    geometry = N2O_geometry,
-    flux_time = 5,
-    gas = vapour_N,
+#oxidizer tank
+oxidizer_tank = rocketpy.MassFlowRateBasedTank(
+    name = "Oxidizer_Tank",
+    geometry = ox_tank_geometry,
+    flux_time = valis["C_Propulsion_Module"]["time_burn"],
+    gas = vapour_N, #doesn't do anything, just needs to exist
     liquid = liquid_N2O,
     initial_gas_mass = 0,
     initial_liquid_mass = valis["NitrousOxide"]["mass_oxidizer"],
@@ -60,14 +64,37 @@ N2O_tank = rocketpy.MassFlowRateBasedTank(
     liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"],
     gas_mass_flow_rate_in = 0,
     gas_mass_flow_rate_out = 0,
-    discretize=100,
+    discretize=100
+)
+
+#set pressurant tank geometry
+press_tank_geometry = rocketpy.CylindricalTank(
+    radius = valis["PressurantTank"]["inner_diameter"]/2,
+    height = valis["PressurantTank"]["inner_height"],
+    spherical_caps = True
+)
+
+#pressurant tank
+pressurant_tank = rocketpy.MassFlowRateBasedTank(
+    name = "Pressurant_Tank",
+    geometry = press_tank_geometry,
+    flux_time = valis["C_Propulsion_Module"]["time_burn"],
+    gas = vapour_N,
+    liquid = liquid_N2O, #doesn't do anything, just needs to exist
+    initial_gas_mass = valis["Nitrogen"]["mass_pressurant"]+1e-10,
+    initial_liquid_mass = 0,
+    liquid_mass_flow_rate_in = 0,
+    liquid_mass_flow_rate_out = 0,
+    gas_mass_flow_rate_in = 0,
+    gas_mass_flow_rate_out = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
+    discretize=100
 )
 
 #MOTOR
 #coordinate system for motor and tanks is inverted to normal coordinate system and relative to the nozzle exit plane
 hyacinth_motor = rocketpy.HybridMotor(
     thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,
-    dry_mass=valis["Nitrogen"]["mass_pressurant"], #TODO fix this: temporarily adding mass of nitrogen here
+    dry_mass=0,
     dry_inertia=(0, 0, 0),
     nozzle_radius=valis["Nozzle"]["exit_diameter"]/2,
     grain_number=1,
@@ -76,19 +103,22 @@ hyacinth_motor = rocketpy.HybridMotor(
     grain_initial_inner_radius=valis["SolidFuel"]["inner_diameter"]/2,
     grain_initial_height=valis["SolidFuel"]["length"],
     grain_density=valis["SolidFuel"]["density"],
-    grains_center_of_mass_position=valis["Rocket"]["length"]-valis["SolidFuel"]["CoM"],
-    center_of_dry_mass_position=1.5, #TODO fix this: temporarily changed to roughly represent com of nitrogen
+    grains_center_of_mass_position=0,
+    center_of_dry_mass_position=0,
     nozzle_position=0,
     burn_time=valis["C_Propulsion_Module"]["time_burn"],
     throat_radius=valis["Nozzle"]["throat_diameter"]/2,
 )
 
 hyacinth_motor.add_tank(
-    tank=N2O_tank,
+    tank=oxidizer_tank,
     position=valis["Rocket"]["length"]-valis["OxidizerTank"]["CoM"],
 )
 
-#TODO add nitrogen tank
+hyacinth_motor.add_tank(
+    tank=pressurant_tank,
+    position=valis["Rocket"]["length"]-valis["PressurantTank"]["CoM"]
+)
 
 #definition of values for inertia calculation
 height = valis["Rocket"]["length"]
@@ -151,7 +181,7 @@ hyacinth.add_parachute(
     #TODO remove unused of these
     #cd_s=2.2*math.pi*0.914**2,
     cd_s=2.2*math.pi*(2.1336/2)**2,
-    trigger=399,
+    trigger=400,
     sampling_rate=100,
     lag=1.5,
     noise=(0,0,0)
@@ -161,7 +191,7 @@ hyacinth.add_parachute(
 hyacinth.add_parachute(
     name="pilot",
     cd_s=1.5*math.pi*0.305**2,
-    trigger=400,
+    trigger=450,
     sampling_rate=100,
     lag=0.5,
     noise=(0,0,0)
