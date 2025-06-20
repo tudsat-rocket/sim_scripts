@@ -64,7 +64,7 @@ def inertia_rec(comp, com, radius):
         #radial inertia (cylinder)
         in_rad = (radius**2/4 + comp_length**2/12) * comp_mass
 
-        #steinerscher bullshit
+        #parallel axis theorem
         in_rad += comp_mass * abs(comp_com-com)**2
 
     else:

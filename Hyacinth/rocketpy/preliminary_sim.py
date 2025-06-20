@@ -3,20 +3,18 @@ import rocketpy
 import datetime
 import math
 
+from pathlib import Path
+
 import libs.data_handler as data_handler
 
-#TODO fix drymasses for tank/motor by getting from valispace or setting to 0
-
 #FILES
-#TODO adjust for submission
-drag_pwr_off = "Hyacinth/rocketpy/data/drag/DragPwrOff.csv"
-drag_pwr_on = "Hyacinth/rocketpy/data/drag/DragPwrOn.csv"
-fin_lift = "Hyacinth/rocketpy/data/lift/naca_0008_final.csv"
+drag_pwr_off = Path(__file__).parent / "data/drag/DragPwrOff.csv"
+drag_pwr_on = Path(__file__).parent / "data/drag/DragPwrOn.csv"
+fin_lift = Path(__file__).parent / "data/lift/naca_0008_final.csv"
 
-#TODO adjust for submission
-valis = data_handler.load_data("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml")
+valis = data_handler.load_data(Path(__file__).parent / "data/valispace/vali_sim_data.yaml")
 
-#euroc launch site
+#EuRoC launch site
 launch_environment = rocketpy.Environment(
     latitude = valis["LaunchEnvironment"]["latitude"],
     longitude = valis["LaunchEnvironment"]["longitude"],
@@ -28,12 +26,11 @@ launch_environment.set_date(
     (2025, 10, 12, 12), timezone="Europe/Lisbon"
 )
 
-#Mostly ISA, wind historical-ish
+#mostly ISA
 launch_environment.set_atmospheric_model(
     type="custom_atmosphere",
     pressure=None,
     temperature=None,
-    #Wind historical-ish, used same 2024
     wind_u = 0,
     wind_v = -3,
 )
@@ -62,7 +59,7 @@ oxidizer_tank = rocketpy.MassFlowRateBasedTank(
     initial_liquid_mass = valis["NitrousOxide"]["mass_oxidizer"],
     liquid_mass_flow_rate_in = 0,
     liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"],
-    gas_mass_flow_rate_in = 0,
+    gas_mass_flow_rate_in = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
     gas_mass_flow_rate_out = 0,
     discretize=100
 )
@@ -93,7 +90,7 @@ pressurant_tank = rocketpy.MassFlowRateBasedTank(
 #MOTOR
 #coordinate system for motor and tanks is inverted to normal coordinate system and relative to the nozzle exit plane
 hyacinth_motor = rocketpy.HybridMotor(
-    thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,
+    thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,#2500N@0s -> 1900N@5s
     dry_mass=0,
     dry_inertia=(0, 0, 0),
     nozzle_radius=valis["Nozzle"]["exit_diameter"]/2,
@@ -103,7 +100,7 @@ hyacinth_motor = rocketpy.HybridMotor(
     grain_initial_inner_radius=valis["SolidFuel"]["inner_diameter"]/2,
     grain_initial_height=valis["SolidFuel"]["length"],
     grain_density=valis["SolidFuel"]["density"],
-    grains_center_of_mass_position=0,
+    grains_center_of_mass_position=valis["Rocket"]["length"]-valis["SolidFuel"]["CoM"],
     center_of_dry_mass_position=0,
     nozzle_position=0,
     burn_time=valis["C_Propulsion_Module"]["time_burn"],
@@ -174,30 +171,19 @@ hyacinth.add_tail(
 )
 
 #CHUTES
-#add main chute, values according to fruity chutes
-#TODO define and import
+
+#Second Event
+#area contains all parachutes, i.e. main, pilot and parabrakes
 hyacinth.add_parachute(
     name="main",
-    #TODO remove unused of these
-    #cd_s=2.2*math.pi*0.914**2,
-    cd_s=2.2*math.pi*(2.1336/2)**2,
-    trigger=400,
+    cd_s=2.2*math.pi*(1.8288/2)**2 + 1.5*math.pi*(0.4572/2)**2 + 1.2 * math.pi * (0.35**2 - 0.075**2),
+    trigger=450,
     sampling_rate=100,
     lag=1.5,
     noise=(0,0,0)
 )
 
-#add pilot chute, values according to fruity chutes
-hyacinth.add_parachute(
-    name="pilot",
-    cd_s=1.5*math.pi*0.305**2,
-    trigger=450,
-    sampling_rate=100,
-    lag=0.5,
-    noise=(0,0,0)
-)
-
-#parabrakes
+#First Event (Parabrakes)
 hyacinth.add_parachute(
     name="parabrakes",
     cd_s = 1.2 * math.pi * (0.35**2 - 0.075**2),
@@ -209,16 +195,15 @@ hyacinth.add_parachute(
 
 #LAUNCH
 euroc2025 = rocketpy.Flight(
-        environment=launch_environment,
-        rocket=hyacinth,
-        rail_length=valis["LaunchEnvironment"]["rail_length"],
-        inclination=valis["LaunchEnvironment"]["inclination"],
-        heading=valis["LaunchEnvironment"]["heading"],
-        )
+    environment=launch_environment,
+    rocket=hyacinth,
+    rail_length=valis["LaunchEnvironment"]["rail_length"],
+    inclination=valis["LaunchEnvironment"]["inclination"],
+    heading=valis["LaunchEnvironment"]["heading"],
+)
 
 
 #PRINTS AND PLOTS
-#launch_environment.prints.launch_site_details()
 
 #printing values
 if True:
@@ -234,14 +219,13 @@ if True:
 
     hyacinth.prints.inertia_details()
 
-    #hyacinth.all_info()
 #plotting values
 if True:
     hyacinth.plots.static_margin()
 
     hyacinth.draw()
 
-    #euroc2025.plots.trajectory_3d()
+    euroc2025.plots.trajectory_3d()
 
     euroc2025.plots.linear_kinematics_data()
 
