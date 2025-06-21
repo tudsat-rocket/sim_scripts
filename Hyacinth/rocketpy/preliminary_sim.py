@@ -7,6 +7,12 @@ from pathlib import Path
 
 import libs.data_handler as data_handler
 
+#IMPORTANT
+# rocketpy and yaml libraries are needed to run this
+# please install them using
+# 'pip install rocketpy'
+# 'pip install pyyaml'
+
 #FILES
 drag_pwr_off = Path(__file__).parent / "data/drag/DragPwrOff.csv"
 drag_pwr_on = Path(__file__).parent / "data/drag/DragPwrOn.csv"
