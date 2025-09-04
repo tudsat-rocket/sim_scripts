@@ -39,7 +39,7 @@ RailButtonRear:
   CoM: 3.210646991064799
 Rocket:
   length: 3.4366469910647988
-  mass: 33.8817947514735
+  mass: 33.5352947514735
   radius: 0.075
 SolidFuel:
   CoM: 3.030646991064799
@@ -135,7 +135,7 @@ components:
             name: Wiring
             valis:
               length: 0
-              mass: 0.05
+              mass: 0.1
               position: 0.3025
           4576:
             children: {}
@@ -175,7 +175,7 @@ components:
         name: 01_Main_Deploy_Submodule
         valis:
           length: 0.605
-          mass: 2.6107
+          mass: 2.6607
           position: 0.0
       4266:
         children:
@@ -242,7 +242,7 @@ components:
                 name: Motor
                 valis:
                   length: 0
-                  mass: 0.55
+                  mass: 0.35000000000000003
                   position: 0.7455
               4574:
                 children: {}
@@ -254,7 +254,7 @@ components:
             name: OpeningMechanism
             valis:
               length: 0
-              mass: 0.8350599999999999
+              mass: 0.63506
               position: 0.7455
           4306:
             children:
@@ -263,19 +263,12 @@ components:
                 name: Wiring
                 valis:
                   length: 0
-                  mass: 0.111
-                  position: 0.7455
-              4598:
-                children: {}
-                name: Camera
-                valis:
-                  length: 0
-                  mass: 0.074
+                  mass: 0.1
                   position: 0.7455
             name: Electronics
             valis:
               length: 0
-              mass: 0.185
+              mass: 0.1
               position: 0.7455
           4314:
             children:
@@ -284,7 +277,7 @@ components:
                 name: CarbonFibre
                 valis:
                   length: 0
-                  mass: 0.6
+                  mass: 0.34800000000000003
                   position: 0.7455
               4561:
                 children: {}
@@ -324,7 +317,7 @@ components:
             name: Panels
             valis:
               length: 0
-              mass: 1.4098
+              mass: 1.1578
               position: 0.7455
           4481:
             children:
@@ -364,12 +357,12 @@ components:
         name: 02_ParaBrake_Module
         valis:
           length: 0.281
-          mass: 3.03308
+          mass: 2.49608
           position: 0.605
     name: A_Recovery_Module
     valis:
       length: 0.886
-      mass: 5.64378
+      mass: 5.1567799999999995
       position: 0.0
   4415:
     children:
@@ -578,14 +571,14 @@ components:
                 name: BulkheadTop
                 valis:
                   length: 0.05
-                  mass: 1.28
+                  mass: 1.0
                   position: 2.2088234955323993
               4310:
                 children: {}
                 name: BulkheadBottom
                 valis:
                   length: 0.05
-                  mass: 1.264
+                  mass: 1.0
                   position: 2.2088234955323993
               4525:
                 children: {}
@@ -594,17 +587,10 @@ components:
                   length: 0
                   mass: 0.08
                   position: 2.2338234955323992
-              4600:
-                children: {}
-                name: Bolts
-                valis:
-                  length: 0
-                  mass: 0.48
-                  position: 2.2338234955323992
             name: OxidizerTank
             valis:
               length: 0.6256469910647989
-              mass: 8.77577670865347
+              mass: 7.751776708653469
               position: 1.9209999999999998
           4279:
             children: {}
@@ -623,7 +609,7 @@ components:
         name: 03_Oxidizer_Tank
         valis:
           length: 0.6256469910647989
-          mass: 8.87577670865347
+          mass: 7.851776708653468
           position: 1.9209999999999998
       4272:
         children:
@@ -723,7 +709,7 @@ components:
             name: Liner
             valis:
               length: 0
-              mass: 0.917
+              mass: 1.06
               position: 3.123646991064799
           4354:
             children:
@@ -751,19 +737,19 @@ components:
             name: IgniterSolid
             valis:
               length: 0.1
-              mass: 0.145
+              mass: 0.16
               position: 2.732646991064799
           4581:
             children: {}
             name: TurbulenceDisc
             valis:
               length: 0.02
-              mass: 0.085
+              mass: 0.17
               position: 3.200646991064799
         name: 05_CombustionChamber
         valis:
           length: 0.626
-          mass: 6.630398042820036
+          mass: 6.873398042820035
           position: 2.810646991064799
       4313:
         children:
@@ -814,7 +800,7 @@ components:
             name: BurstDisc
             valis:
               length: 0
-              mass: 0.274
+              mass: 0.06
               position: 1.779
           4466:
             children:
@@ -893,6 +879,48 @@ components:
               length: 0.28400000000000003
               mass: 1.0692000000000002
               position: 1.637
+          4526:
+            children: {}
+            name: Cube
+            valis:
+              length: 0
+              mass: 0.12
+              position: 1.779
+          4527:
+            children: {}
+            name: PressureRegulator
+            valis:
+              length: 0
+              mass: 0.7000000000000001
+              position: 1.779
+          4528:
+            children: {}
+            name: VentValve
+            valis:
+              length: 0
+              mass: 0.302
+              position: 1.779
+          4529:
+            children: {}
+            name: QuickDisconnectNitrogen
+            valis:
+              length: 0
+              mass: 0.08
+              position: 1.779
+          4530:
+            children: {}
+            name: FittingsAndPiping
+            valis:
+              length: 0
+              mass: 0.65
+              position: 1.779
+          4531:
+            children: {}
+            name: CrossConnectorNitrogen
+            valis:
+              length: 0
+              mass: 0.08
+              position: 1.779
           4532:
             children:
               4534:
@@ -921,33 +949,33 @@ components:
               length: 0
               mass: 0.375
               position: 1.779
-          4601:
+          4533:
             children: {}
-            name: TopFluidSystem
+            name: PressureSensorNitrogen
             valis:
               length: 0
-              mass: 1.1260000000000001
+              mass: 0.03
               position: 1.779
-          4602:
+          4582:
             children: {}
-            name: TopVentSystem
+            name: PressureReliefValve
             valis:
               length: 0
-              mass: 0.457
+              mass: 0.15
               position: 1.779
         name: 02_Top_Valvery
         valis:
           length: 0.28400000000000003
-          mass: 3.3011999999999997
+          mass: 3.6162
           position: 1.637
       4491:
         children:
           4311:
             children: {}
-            name: MainFluidSystem
+            name: MainValve
             valis:
               length: 0
-              mass: 0.9975
+              mass: 0.9
               position: 2.678646991064799
           4471:
             children:
@@ -1033,12 +1061,33 @@ components:
               length: 0.264
               mass: 1.1948
               position: 2.546646991064799
-          4514:
+          4510:
             children: {}
-            name: FillDumpSystem
+            name: Piping
             valis:
               length: 0
-              mass: 0.54
+              mass: 0.5
+              position: 2.678646991064799
+          4513:
+            children: {}
+            name: NitrousQuickDisconnect
+            valis:
+              length: 0
+              mass: 0.15
+              position: 2.678646991064799
+          4514:
+            children: {}
+            name: FillAndDumpValve
+            valis:
+              length: 0
+              mass: 0.4
+              position: 2.678646991064799
+          4515:
+            children: {}
+            name: Cube
+            valis:
+              length: 0
+              mass: 0.15
               position: 2.678646991064799
           4518:
             children: {}
@@ -1061,34 +1110,41 @@ components:
                 name: BatteryBoardA
                 valis:
                   length: 0
-                  mass: 0.23600000000000002
+                  mass: 0.16
                   position: 2.678646991064799
               4522:
                 children: {}
                 name: EngineBoardA
                 valis:
                   length: 0
-                  mass: 0.04
+                  mass: 0.06
                   position: 2.678646991064799
-              4599:
+              4523:
                 children: {}
-                name: StructureBoard
+                name: EngineBoardB
                 valis:
                   length: 0
-                  mass: 0.12
+                  mass: 0.06
+                  position: 2.678646991064799
+              4524:
+                children: {}
+                name: BatteryBoardB
+                valis:
+                  length: 0
+                  mass: 0.16
                   position: 2.678646991064799
             name: Electronics
             valis:
               length: 0
-              mass: 0.596
+              mass: 0.64
               position: 2.678646991064799
         name: 04_Bottom_Valvery
         valis:
           length: 0.264
-          mass: 3.5783
+          mass: 4.1848
           position: 2.546646991064799
     name: C_Propulsion_Module
     valis:
       length: 2.129646991064799
-      mass: 24.313674751473503
+      mass: 24.454174751473502
       position: 1.307

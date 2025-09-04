@@ -182,7 +182,7 @@ hyacinth.add_tail(
 #area contains all parachutes, i.e. main, pilot and parabrakes
 hyacinth.add_parachute(
     name="main",
-    cd_s=2.2*math.pi*(1.8288/2)**2 + 1.5*math.pi*(0.4572/2)**2 + 1.2 * math.pi * (0.35**2 - 0.075**2),
+    cd_s=2.2*math.pi*(1.8288/2)**2 + 1.5*math.pi*(0.4572/2)**2 + 0.351,
     trigger=450,
     sampling_rate=100,
     lag=1.5,
@@ -192,7 +192,8 @@ hyacinth.add_parachute(
 #First Event (Parabrakes)
 hyacinth.add_parachute(
     name="parabrakes",
-    cd_s = 1.2 * math.pi * (0.35**2 - 0.075**2),
+    #cd_s = 1.2 * math.pi * (0.35**2 - 0.075**2),
+    cd_s = 0.351,
     trigger="apogee",
     sampling_rate=100,
     lag = 3,

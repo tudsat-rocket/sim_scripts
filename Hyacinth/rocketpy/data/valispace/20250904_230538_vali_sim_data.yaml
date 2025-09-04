@@ -39,7 +39,7 @@ RailButtonRear:
   CoM: 3.210646991064799
 Rocket:
   length: 3.4366469910647988
-  mass: 33.8817947514735
+  mass: 34.1967947514735
   radius: 0.075
 SolidFuel:
   CoM: 3.030646991064799
@@ -814,7 +814,7 @@ components:
             name: BurstDisc
             valis:
               length: 0
-              mass: 0.274
+              mass: 0.06
               position: 1.779
           4466:
             children:
@@ -893,6 +893,48 @@ components:
               length: 0.28400000000000003
               mass: 1.0692000000000002
               position: 1.637
+          4526:
+            children: {}
+            name: Cube
+            valis:
+              length: 0
+              mass: 0.12
+              position: 1.779
+          4527:
+            children: {}
+            name: PressureRegulator
+            valis:
+              length: 0
+              mass: 0.7000000000000001
+              position: 1.779
+          4528:
+            children: {}
+            name: VentValve
+            valis:
+              length: 0
+              mass: 0.302
+              position: 1.779
+          4529:
+            children: {}
+            name: QuickDisconnectNitrogen
+            valis:
+              length: 0
+              mass: 0.08
+              position: 1.779
+          4530:
+            children: {}
+            name: FittingsAndPiping
+            valis:
+              length: 0
+              mass: 0.65
+              position: 1.779
+          4531:
+            children: {}
+            name: CrossConnectorNitrogen
+            valis:
+              length: 0
+              mass: 0.08
+              position: 1.779
           4532:
             children:
               4534:
@@ -921,24 +963,24 @@ components:
               length: 0
               mass: 0.375
               position: 1.779
-          4601:
+          4533:
             children: {}
-            name: TopFluidSystem
+            name: PressureSensorNitrogen
             valis:
               length: 0
-              mass: 1.1260000000000001
+              mass: 0.03
               position: 1.779
-          4602:
+          4582:
             children: {}
-            name: TopVentSystem
+            name: PressureReliefValve
             valis:
               length: 0
-              mass: 0.457
+              mass: 0.15
               position: 1.779
         name: 02_Top_Valvery
         valis:
           length: 0.28400000000000003
-          mass: 3.3011999999999997
+          mass: 3.6162
           position: 1.637
       4491:
         children:
@@ -1090,5 +1132,5 @@ components:
     name: C_Propulsion_Module
     valis:
       length: 2.129646991064799
-      mass: 24.313674751473503
+      mass: 24.628674751473504
       position: 1.307

@@ -24,6 +24,8 @@ import yaml
 
 import datetime
 
+from pathlib import Path
+
 allowed_keys_sim = ["length", "mass", "position"]
 
 extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_length", "inclination", "heading"],
@@ -149,12 +151,12 @@ for comp_name in extra_info:
         out_dict[comp_name] = comp_valis
 
 #WRITE
-with open("Hyacinth/rocketpy/data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
+with open(Path(__file__).parent / "../data/valispace/vali_sim_data.yaml", "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
 
 date_string = "{:%Y%m%d_%H%M%S}".format(datetime.datetime.now())
 
-with open("Hyacinth/rocketpy/data/valispace/" + date_string + "_vali_sim_data.yaml", "w", encoding="utf-8") as file:
+with open(Path(__file__).parent / ("../data/valispace/" + date_string + "_vali_sim_data.yaml"), "w", encoding="utf-8") as file:
     yaml.dump(out_dict, file)
 
     print("Successfully retrieved data.")
