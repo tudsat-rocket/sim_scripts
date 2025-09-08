@@ -3,6 +3,9 @@ import rocketpy
 import datetime
 import math
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 from pathlib import Path
 
 import libs.data_handler as data_handler
@@ -17,6 +20,7 @@ import libs.data_handler as data_handler
 drag_pwr_off = Path(__file__).parent / "data/drag/DragPwrOff.csv"
 drag_pwr_on = Path(__file__).parent / "data/drag/DragPwrOn.csv"
 fin_lift = Path(__file__).parent / "data/lift/naca_0008_final.csv"
+engine_thrust = Path(__file__).parent / "data/thrust/hyacinth_engine.csv"
 
 valis = data_handler.load_data(Path(__file__).parent / "data/valispace/vali_sim_data.yaml")
 
@@ -37,8 +41,23 @@ launch_environment.set_atmospheric_model(
     type="custom_atmosphere",
     pressure=None,
     temperature=None,
-    wind_u = 0,
-    wind_v = -3,
+    #Wind Scenarios based on historical data
+
+    #Scenario 1: 330° 4 m/s - 10 m/s
+    #wind_u = [(0, -2.00),(3000, -5.00)],
+    #wind_v = [(0, 3.46),(3000, 8.66)],
+    
+    #Scenario 2: 330° 7 m/s - 20 m/s
+    #wind_u = [(0, -3.50),(3000, -10.00)],
+    #wind_v = [(0, 6.06),(3000, 17.32)],
+    
+    #Scneario 3: 210° 4 m/s - 10 m/s
+    wind_u = [(0, -2.00),(3000, -5.00)],
+    wind_v = [(0, -3.46),(3000, -8.66)],
+    
+    #Secnario 4: 210° 7 m/s - 20 m/s
+    #wind_u = [(0, -3.50),(3000, -10.00)],
+    #wind_v = [(0, -6.06),(3000, -17.32)],
 )
 #TANKS
 #set properties of Nitrous Oxide
@@ -54,17 +73,22 @@ ox_tank_geometry = rocketpy.CylindricalTank(
     spherical_caps=False
 )
 
+
+time_burn = valis["C_Propulsion_Module"]["time_burn"]
+mass_ox = valis["NitrousOxide"]["mass_oxidizer"]
+
 #oxidizer tank
 oxidizer_tank = rocketpy.MassFlowRateBasedTank(
     name = "Oxidizer_Tank",
     geometry = ox_tank_geometry,
-    flux_time = valis["C_Propulsion_Module"]["time_burn"],
+    flux_time = time_burn,
     gas = vapour_N, #doesn't do anything, just needs to exist
     liquid = liquid_N2O,
     initial_gas_mass = 0,
-    initial_liquid_mass = valis["NitrousOxide"]["mass_oxidizer"],
+    initial_liquid_mass = mass_ox,
     liquid_mass_flow_rate_in = 0,
-    liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"],
+    #liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"],
+    liquid_mass_flow_rate_out = lambda t: min(t * mass_ox*5/(time_burn**2), mass_ox/time_burn*10/math.sqrt(90)) if t<(time_burn/2) else min(mass_ox/time_burn*20 - t * mass_ox*5/(time_burn**2), mass_ox/time_burn * 10 / math.sqrt(90)),
     gas_mass_flow_rate_in = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
     gas_mass_flow_rate_out = 0,
     discretize=100
@@ -89,6 +113,7 @@ pressurant_tank = rocketpy.MassFlowRateBasedTank(
     liquid_mass_flow_rate_in = 0,
     liquid_mass_flow_rate_out = 0,
     gas_mass_flow_rate_in = 0,
+    #gas_mass_flow_rate_out =
     gas_mass_flow_rate_out = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
     discretize=100
 )
@@ -96,7 +121,9 @@ pressurant_tank = rocketpy.MassFlowRateBasedTank(
 #MOTOR
 #coordinate system for motor and tanks is inverted to normal coordinate system and relative to the nozzle exit plane
 hyacinth_motor = rocketpy.HybridMotor(
-    thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,#2500N@0s -> 1900N@5s
+    thrust_source=engine_thrust,
+    interpolation_method="spline",
+    #thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,#2500N@0s -> 1900N@5s
     dry_mass=0,
     dry_inertia=(0, 0, 0),
     nozzle_radius=valis["Nozzle"]["exit_diameter"]/2,
@@ -183,7 +210,6 @@ hyacinth.add_tail(
 hyacinth.add_parachute(
     name="main",
     cd_s=2.2*math.pi*(1.8288/2)**2 + 1.5*math.pi*(0.4572/2)**2 + 0.351,
-    #cd_s=2.2*math.pi*(1.8288/2)**2 + 1.5*math.pi*(0.4572/2)**2 + 1.2 * math.pi * (0.35**2 - 0.075**2),
     trigger=450,
     sampling_rate=100,
     lag=1.5,
@@ -194,7 +220,6 @@ hyacinth.add_parachute(
 hyacinth.add_parachute(
     name="parabrakes",
     cd_s = 0.351,
-    #cd_s = 1.2 * math.pi * (0.35**2 - 0.075**2),
     trigger="apogee",
     sampling_rate=100,
     lag = 3,
@@ -214,7 +239,7 @@ euroc2025 = rocketpy.Flight(
 #PRINTS AND PLOTS
 
 #printing values
-if True:
+if False:
     euroc2025.prints.maximum_values()
 
     euroc2025.prints.out_of_rail_conditions()
@@ -227,8 +252,10 @@ if True:
 
     hyacinth.prints.inertia_details()
 
+    hyacinth_motor.all_info()
+
 #plotting values
-if True:
+if False:
     hyacinth.plots.static_margin()
 
     euroc2025.plots.stability_and_control_data()
@@ -240,3 +267,182 @@ if True:
     euroc2025.plots.linear_kinematics_data()
 
     hyacinth.plots.total_mass()
+
+
+def stability_plot():
+    plt.figure(figsize=(7, 4))
+
+    ax1 = plt.subplot()
+    ax1.plot(euroc2025.stability_margin[:, 0], euroc2025.stability_margin[:, 1])
+    #ax1.set_xlim(0, euroc2025.stability_margin[:, 0][-1])
+    ax1.set_title("Stability Margin")
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Stability Margin (c)")
+    ax1.set_xlim(0, euroc2025.parachute_events[0][0]+1)
+    ax1.axvline(
+        x=euroc2025.out_of_rail_time,
+        color="r",
+        linestyle="--",
+        label="Out of Rail Time",
+    )
+    ax1.axvline(
+        x=euroc2025.rocket.motor.burn_out_time,
+        color="g",
+        linestyle="--",
+        label="Burn Out Time",
+    )
+
+    ax1.axvline(
+        x=euroc2025.apogee_time,
+        color="m",
+        linestyle="--",
+        label="Apogee Time",
+    )
+    ax1.legend()
+    ax1.grid()
+    rocketpy.plots.plot_helpers.show_or_save_plot("stability.png")
+
+
+
+
+def velocity_plot():
+    plt.figure(figsize=(7, 4))
+
+    ax1 = plt.subplot()
+    ax1.plot(euroc2025.speed[:, 0], euroc2025.speed[:, 1])
+    #ax1.set_xlim(0, euroc2025.stability_margin[:, 0][-1])
+    ax1.set_title("Velocity")
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Velocity (m/s)")
+    ax1.set_xlim(0, euroc2025.t_final)
+    ax1.axvline(
+        x=euroc2025.out_of_rail_time,
+        color="r",
+        linestyle="--",
+        label="Out of Rail Time",
+    )
+    ax1.axvline(
+        x=euroc2025.rocket.motor.burn_out_time,
+        color="g",
+        linestyle="--",
+        label="Burn Out Time",
+    )
+
+    ax1.axvline(
+        x=euroc2025.apogee_time,
+        color="m",
+        linestyle="--",
+        label="Apogee Time",
+    )
+    ax1.axvline(
+        x=euroc2025.parachute_events[1][0],
+        color="gold",
+        linestyle="--",
+        label="Main Parachute Deploy",
+    )
+
+    ax1.legend()
+    ax1.grid()
+    rocketpy.plots.plot_helpers.show_or_save_plot("velocity.png")
+
+
+def acceleration_plot():
+    plt.figure(figsize=(7, 4))
+
+    ax1 = plt.subplot()
+    ax1.plot(euroc2025.acceleration[:, 0], euroc2025.acceleration[:, 1])
+    #ax1.set_xlim(0, euroc2025.stability_margin[:, 0][-1])
+    ax1.set_title("Acceleration")
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Acceleration (m/s²)")
+    ax1.set_xlim(0, euroc2025.t_final)
+    ax1.axvline(
+        x=euroc2025.out_of_rail_time,
+        color="r",
+        linestyle="--",
+        label="Out of Rail Time",
+    )
+    ax1.axvline(
+        x=euroc2025.rocket.motor.burn_out_time,
+        color="g",
+        linestyle="--",
+        label="Burn Out Time",
+    )
+
+    ax1.axvline(
+        x=euroc2025.apogee_time,
+        color="m",
+        linestyle="--",
+        label="Apogee Time",
+    )
+    ax1.axvline(
+        x=euroc2025.parachute_events[1][0],
+        color="gold",
+        linestyle="--",
+        label="Main Parachute Deploy",
+    )
+
+    ax1.legend()
+    ax1.grid()
+    rocketpy.plots.plot_helpers.show_or_save_plot("acceleration.png")
+
+
+def com_cop_plot():
+    plt.figure(figsize=(7, 4))
+
+    ax1 = plt.subplot()
+    x_axis= np.arange(0, euroc2025.parachute_events[0][0]+1, 0.1)
+    ax1.plot(x_axis, hyacinth.center_of_mass(x_axis), label = "COM")
+    ax1.plot(x_axis, hyacinth.cp_position(euroc2025.mach_number(x_axis)), label = "COP")
+    #ax1.set_xlim(0, euroc2025.stability_margin[:, 0][-1])
+    ax1.set_title("COM / COP")
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("COM position / COP position (m)")
+    ax1.set_xlim(0, euroc2025.parachute_events[0][0]+1)
+    ax1.axvline(
+        x=euroc2025.out_of_rail_time,
+        color="r",
+        linestyle="--",
+        label="Out of Rail Time",
+    )
+    ax1.axvline(
+        x=euroc2025.rocket.motor.burn_out_time,
+        color="g",
+        linestyle="--",
+        label="Burn Out Time",
+    )
+
+    ax1.axvline(
+        x=euroc2025.apogee_time,
+        color="m",
+        linestyle="--",
+        label="Apogee Time",
+    )
+
+    ax1.legend()
+    ax1.grid()
+    rocketpy.plots.plot_helpers.show_or_save_plot("com_cop.png")
+
+#Plots for Technical Report
+#!!!These save images as files
+
+if False:
+    stability_plot()
+    velocity_plot()
+    acceleration_plot()
+    com_cop_plot()
+
+#Prints for Technical Report
+
+if False:
+    print(f"Expected Point of Descend: {math.sqrt((euroc2025.x(0)-euroc2025.x_impact)**2 + (euroc2025.y(0)-euroc2025.y_impact)**2)} m")
+
+    euroc2025.prints.events_registered()
+    euroc2025.prints.apogee_conditions()
+    euroc2025.prints.impact_conditions()
+
+    euroc2025.plots.trajectory_3d(filename="3d_trajectory.png")
+
+    print(euroc2025.speed(euroc2025.parachute_events[0][0]+10))
+
+

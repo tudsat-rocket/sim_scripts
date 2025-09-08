@@ -1,6 +1,6 @@
 C_Propulsion_Module:
   thrust: 2500.0
-  time_burn: 5.87
+  time_burn: 5.33
 FinCan:
   boattail_bottom_radius: 0.057
   boattail_length: 0.14
@@ -39,7 +39,7 @@ RailButtonRear:
   CoM: 3.210646991064799
 Rocket:
   length: 3.4366469910647988
-  mass: 33.9867947514735
+  mass: 33.8817947514735
   radius: 0.075
 SolidFuel:
   CoM: 3.030646991064799
@@ -387,7 +387,7 @@ components:
             name: Structure
             valis:
               length: 0
-              mass: 0.225
+              mass: 0.12
               position: 1.1749999999999998
           4538:
             children: {}
@@ -434,7 +434,7 @@ components:
         name: 02_Avionics
         valis:
           length: 0.252
-          mass: 1.165
+          mass: 1.06
           position: 1.049
       4268:
         children:
@@ -558,7 +558,7 @@ components:
     name: B_Payvionics_Module
     valis:
       length: 0.421
-      mass: 4.02934
+      mass: 3.9243400000000004
       position: 0.886
   4416:
     children:
