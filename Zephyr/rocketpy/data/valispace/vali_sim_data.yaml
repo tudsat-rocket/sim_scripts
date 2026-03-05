@@ -1,0 +1,428 @@
+components:
+  4636:
+    children:
+      4705:
+        children: {}
+        name: 01_Nosecone
+        valis:
+          length: 0
+          mass: 0
+          position: 0.0
+      4706:
+        children:
+          4723:
+            children:
+              4724:
+                children: {}
+                name: Carbon_Tubes
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4725:
+                children: {}
+                name: Inserts
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4726:
+                children: {}
+                name: Lower_Radax
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4727:
+                children: {}
+                name: Lower_Adapter_Plates
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4728:
+                children: {}
+                name: Screws
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+            name: Structure
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+        name: 02_Parabrakes
+        valis:
+          length: 0
+          mass: 0
+          position: 0.0
+    name: A_Recovery_Module
+    valis:
+      length: 0
+      mass: 0.0
+      position: 0.0
+  4637:
+    children:
+      4704:
+        children:
+          4710:
+            children: {}
+            name: Screws
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4711:
+            children: {}
+            name: Carbon_Tubes
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4712:
+            children: {}
+            name: Inserts
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4713:
+            children: {}
+            name: Upper_Radax
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4714:
+            children: {}
+            name: Lower_Radax
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4715:
+            children: {}
+            name: Upper_Adapter_Plate
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4716:
+            children: {}
+            name: Lower_Adapter_Plate
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4717:
+            children: {}
+            name: Mounting_Sleeves
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4722:
+            children: {}
+            name: Sealing_Lips
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+        name: Structure
+        valis:
+          length: 0
+          mass: 0
+          position: 0.0
+    name: B_Payvionics_Module
+    valis:
+      length: 0
+      mass: 0.0
+      position: 0.0
+  4638:
+    children:
+      4639:
+        children:
+          4649:
+            children:
+              4650:
+                children: {}
+                name: Bodytube
+                valis:
+                  length: 0.6
+                  mass: 0.5226000000000001
+                  position: -0.3
+              4695:
+                children:
+                  4697:
+                    children: {}
+                    name: Inserts
+                    valis:
+                      length: 0
+                      mass: 0.037014
+                      position: 0.0
+                  4698:
+                    children: {}
+                    name: Adapter_Plates
+                    valis:
+                      length: 0
+                      mass: 0.12083400000000001
+                      position: 0.0
+                  4699:
+                    children: {}
+                    name: Sealing_Panels
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4720:
+                    children: {}
+                    name: Rail_Pin
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4731:
+                    children: {}
+                    name: Carbon_Rods
+                    valis:
+                      length: 0.074
+                      mass: 0.014959914000000001
+                      position: -0.037
+                name: Interstage
+                valis:
+                  length: 0
+                  mass: 0.17280791399999998
+                  position: 0.0
+              4701:
+                children: {}
+                name: Upper_Radax
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4702:
+                children: {}
+                name: Lower_Radax
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4708:
+                children: {}
+                name: Screws
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+            name: Structure
+            valis:
+              length: 0
+              mass: 0.695407914
+              position: 0.0
+        name: 01_Upper_Propulsion
+        valis:
+          length: 0
+          mass: 0
+          position: 0.0
+      4640:
+        children:
+          4642:
+            children: {}
+            name: Alu_Tube
+            valis:
+              length: 0.5
+              mass: 3.07483380970101
+              position: -0.25
+          4643:
+            children: {}
+            name: Upper_Bulkhead
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4644:
+            children: {}
+            name: Lower_Bulkhead
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4707:
+            children: {}
+            name: Screws
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4709:
+            children:
+              4693:
+                children: {}
+                name: Raceway_Left
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4703:
+                children: {}
+                name: Raceway_Right
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+            name: Raceways
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+        name: 02_Oxidizer_Tank
+        valis:
+          length: 0
+          mass: 3.07483380970101
+          position: 0.0
+      4641:
+        children:
+          4645:
+            children:
+              4647:
+                children: {}
+                name: Solid_Fuel
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+            name: Combustion_Chamber
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+          4646:
+            children:
+              4648:
+                children: {}
+                name: Upper_Radax
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4681:
+                children:
+                  4718:
+                    children: {}
+                    name: Airframe_Fincan
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4719:
+                    children: {}
+                    name: Rail_Pin
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                name: Fincan
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4682:
+                children: {}
+                name: Screws
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+              4683:
+                children:
+                  4685:
+                    children: {}
+                    name: Carbon_Rods
+                    valis:
+                      length: 0.074
+                      mass: 0.014959914000000001
+                      position: -0.037
+                  4686:
+                    children: {}
+                    name: Inserts
+                    valis:
+                      length: 0
+                      mass: 0.037014
+                      position: 0.0
+                  4687:
+                    children: {}
+                    name: Adapter_Plates
+                    valis:
+                      length: 0
+                      mass: 0.060417000000000005
+                      position: 0.0
+                  4688:
+                    children: {}
+                    name: Sealing_Panels
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4721:
+                    children: {}
+                    name: Hold_Down
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                name: Interstage
+                valis:
+                  length: 0
+                  mass: 0.112390914
+                  position: 0.0
+              4684:
+                children:
+                  4689:
+                    children: {}
+                    name: Slim_Carbon_Rods
+                    valis:
+                      length: 0.26347000000000004
+                      mass: 0.35086932228000006
+                      position: -0.13173500000000002
+                  4690:
+                    children: {}
+                    name: Inserts
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4691:
+                    children: {}
+                    name: Upper_Connecting_Plates
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                  4692:
+                    children: {}
+                    name: Lower_Connecting_Plates
+                    valis:
+                      length: 0
+                      mass: 0
+                      position: 0.0
+                name: Thrust_Structure
+                valis:
+                  length: 0
+                  mass: 0
+                  position: 0.0
+            name: Structure
+            valis:
+              length: 0
+              mass: 0
+              position: 0.0
+        name: 03_Lower_Propulsion
+        valis:
+          length: 0
+          mass: 0.0
+          position: 0.0
+    name: C_Propulsion_Module
+    valis:
+      length: 0
+      mass: 3.07483380970101
+      position: 0.0
