@@ -28,24 +28,22 @@ from pathlib import Path
 
 allowed_keys_sim = ["length", "mass", "position"]
 
-'''
-extra_info = {"LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_length", "inclination", "heading"],
-              "Rocket": ["length", "mass", "radius"],
-              "C_Propulsion_Module": ["thrust", "time_burn"],
-              "SolidFuel": ["mass_fuel", "outer_diameter", "inner_diameter", "length", "density"],
-              "FinCan": ["fins_root_chord", "fins_tip_chord", "fins_span", "fins_sweep_length", "boattail_bottom_radius", "boattail_length"],
-              "NitrousOxide": ["density", "mass_oxidizer"],
-              "OxidizerTank": ["inner_height", "inner_diameter"],
-              "Nitrogen": ["mass_pressurant"],
-              "PressurantTank": ["inner_height", "inner_diameter"],
-              "Nozzle": ["exit_diameter", "throat_diameter"],
-              "NoseCone": ["conical_length"]}
 
-'''
-extra_info = {}
+extra_info = {
+        "LaunchEnvironment": ["latitude", "longitude", "elevation", "rail_length", "inclination", "heading"],
+       "Rocket": ["length", "mass", "radius"],
+       "C_Propulsion_Module": ["thrust", "time_burn"],
+       "Solid_Fuel": ["mass_fuel", "diameter_outer", "diameter_inner", "length", "density_fuel"],
+       "FinCan": ["fins_root_chord", "fins_tip_chord", "fins_span", "fins_sweep_length", "boattail_radius_bottom", "boattail_length"],
+       "NitrousOxide": ["density", "mass_oxidizer"],
+       "02_Oxidizer_Tank": ["height_inner", "diameter_inner"],
+       "Nitrogen_Tank": ["height_inner", "diameter_inner", "mass_pressurant"],
+       "Nozzle": ["diameter_exit", "diameter_throat"],
+       "01_Nosecone": ["length_conical"]
+}
 
-#com_list = ["OxidizerTank", "PressurantTank", "SolidFuel", "RailButtonFront", "RailButtonRear"]
-com_list = []
+
+com_list = ["02_Oxidizer_Tank", "Nitrogen_Tank", "Solid_Fuel", "RailButtonFront", "RailButtonRear"]
 
 conversion_factors = {"mm": 1e-3, "cm": 1e-2, "dm": 1e-1, "m": 1, "km": 1e3,
                       "mg": 1e-6, "g": 1e-3, "kg": 1, "t": 1e3,

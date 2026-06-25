@@ -33,7 +33,7 @@ Nozzle:
   diameter_exit: 0.06
   diameter_throat: 0.03
 RailButtonFront:
-  CoM: 1.9146349999999999
+  CoM: 1.6533849999999999
 RailButtonRear:
   CoM: 2.9063849999999998
 Rocket:
@@ -606,7 +606,7 @@ components:
                 valis:
                   length: 0.5225
                   mass: 0.405
-                  position: 1.297135
+                  position: 1.391635
               4695:
                 children:
                   4697:
@@ -615,47 +615,47 @@ components:
                     valis:
                       length: 0
                       mass: 0.037014
-                      position: 1.914135
+                      position: 1.652885
                   4698:
                     children: {}
                     name: Adapter_Plates
                     valis:
                       length: 0
                       mass: 0.12083400000000001
-                      position: 1.914135
+                      position: 1.652885
                   4699:
                     children: {}
                     name: Sealing_Panels
                     valis:
                       length: 0
                       mass: 0
-                      position: 1.914135
+                      position: 1.652885
                   4720:
                     children: {}
                     name: RailButtonFront
                     valis:
                       length: 0
                       mass: 0
-                      position: 1.9146349999999999
+                      position: 1.6533849999999999
                   4731:
                     children: {}
                     name: Carbon_Rods
                     valis:
                       length: 0.074
                       mass: 0.014959914000000001
-                      position: 1.877135
+                      position: 1.615885
                   4789:
                     children: {}
                     name: Upper_Radax
                     valis:
                       length: 0
                       mass: 0.15221500000000002
-                      position: 1.914135
+                      position: 1.652885
                 name: Interstage
                 valis:
                   length: 0.189
                   mass: 0.325022914
-                  position: 1.819635
+                  position: 1.558385
               4701:
                 children: {}
                 name: Upper_Radax_Bodytube

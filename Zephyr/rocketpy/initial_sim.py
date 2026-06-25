@@ -14,9 +14,9 @@ import libs.data_handler as data_handler
 # 'pip install pyyaml'
 
 #FILES
-drag_pwr_off = Path(__file__).parent / "data/drag/DragPwrOff.csv"
-drag_pwr_on = Path(__file__).parent / "data/drag/DragPwrOn.csv"
-fin_lift = Path(__file__).parent / "data/lift/naca_0008_final.csv"
+drag_pwr_off = (Path(__file__).parent / "data/drag/DragPwrOff.csv").as_posix()
+drag_pwr_on = (Path(__file__).parent / "data/drag/DragPwrOn.csv").as_posix()
+fin_lift = (Path(__file__).parent / "data/lift/naca_0008_final.csv").as_posix()
 
 valis = data_handler.load_data(Path(__file__).parent / "data/valispace/vali_sim_data.yaml")
 
@@ -49,8 +49,8 @@ vapour_N = rocketpy.Fluid(name="Gaseous Nitrogen", density=1200)
 
 #set oxidizer tank geometry
 ox_tank_geometry = rocketpy.CylindricalTank(
-    radius = valis["OxidizerTank"]["inner_diameter"]/2,
-    height = valis["OxidizerTank"]["inner_height"],
+    radius = valis["02_Oxidizer_Tank"]["diameter_inner"]/2,
+    height = valis["02_Oxidizer_Tank"]["height_inner"],
     spherical_caps=False
 )
 
@@ -64,16 +64,16 @@ oxidizer_tank = rocketpy.MassFlowRateBasedTank(
     initial_gas_mass = 0,
     initial_liquid_mass = valis["NitrousOxide"]["mass_oxidizer"],
     liquid_mass_flow_rate_in = 0,
-    liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"],
-    gas_mass_flow_rate_in = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
+    liquid_mass_flow_rate_out = valis["NitrousOxide"]["mass_oxidizer"]/valis["C_Propulsion_Module"]["time_burn"]*0.999,
+    gas_mass_flow_rate_in = valis["Nitrogen_Tank"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"]*0.999,
     gas_mass_flow_rate_out = 0,
     discretize=100
 )
 
 #set pressurant tank geometry
 press_tank_geometry = rocketpy.CylindricalTank(
-    radius = valis["PressurantTank"]["inner_diameter"]/2,
-    height = valis["PressurantTank"]["inner_height"],
+    radius = valis["Nitrogen_Tank"]["diameter_inner"]/2,
+    height = valis["Nitrogen_Tank"]["height_inner"],
     spherical_caps = True
 )
 
@@ -84,43 +84,44 @@ pressurant_tank = rocketpy.MassFlowRateBasedTank(
     flux_time = valis["C_Propulsion_Module"]["time_burn"],
     gas = vapour_N,
     liquid = liquid_N2O, #doesn't do anything, just needs to exist
-    initial_gas_mass = valis["Nitrogen"]["mass_pressurant"]+1e-10,
+    initial_gas_mass = valis["Nitrogen_Tank"]["mass_pressurant"]+1e-10,
     initial_liquid_mass = 0,
     liquid_mass_flow_rate_in = 0,
     liquid_mass_flow_rate_out = 0,
     gas_mass_flow_rate_in = 0,
-    gas_mass_flow_rate_out = valis["Nitrogen"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"],
+    gas_mass_flow_rate_out = valis["Nitrogen_Tank"]["mass_pressurant"]/valis["C_Propulsion_Module"]["time_burn"]*0.999,
     discretize=100
 )
 
 #MOTOR
 #coordinate system for motor and tanks is inverted to normal coordinate system and relative to the nozzle exit plane
 hyacinth_motor = rocketpy.HybridMotor(
-    thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,#2500N@0s -> 1900N@5s
+    thrust_source = valis["C_Propulsion_Module"]["thrust"],
+#    thrust_source=lambda t: valis["C_Propulsion_Module"]["thrust"]-t*120,#2500N@0s -> 1900N@5s
     dry_mass=0,
     dry_inertia=(0, 0, 0),
-    nozzle_radius=valis["Nozzle"]["exit_diameter"]/2,
+    nozzle_radius=valis["Nozzle"]["diameter_exit"]/2,
     grain_number=1,
     grain_separation=0,
-    grain_outer_radius=valis["SolidFuel"]["outer_diameter"]/2,
-    grain_initial_inner_radius=valis["SolidFuel"]["inner_diameter"]/2,
-    grain_initial_height=valis["SolidFuel"]["length"],
-    grain_density=valis["SolidFuel"]["density"],
-    grains_center_of_mass_position=valis["Rocket"]["length"]-valis["SolidFuel"]["CoM"],
+    grain_outer_radius=valis["Solid_Fuel"]["diameter_outer"]/2,
+    grain_initial_inner_radius=valis["Solid_Fuel"]["diameter_inner"]/2,
+    grain_initial_height=valis["Solid_Fuel"]["length"],
+    grain_density=valis["Solid_Fuel"]["density_fuel"],
+    grains_center_of_mass_position=valis["Rocket"]["length"]-valis["Solid_Fuel"]["CoM"],
     center_of_dry_mass_position=0,
     nozzle_position=0,
     burn_time=valis["C_Propulsion_Module"]["time_burn"],
-    throat_radius=valis["Nozzle"]["throat_diameter"]/2,
+    throat_radius=valis["Nozzle"]["diameter_throat"]/2,
 )
 
 hyacinth_motor.add_tank(
     tank=oxidizer_tank,
-    position=valis["Rocket"]["length"]-valis["OxidizerTank"]["CoM"],
+    position=valis["Rocket"]["length"]-valis["02_Oxidizer_Tank"]["CoM"],
 )
 
 hyacinth_motor.add_tank(
     tank=pressurant_tank,
-    position=valis["Rocket"]["length"]-valis["PressurantTank"]["CoM"]
+    position=valis["Rocket"]["length"]-valis["Nitrogen_Tank"]["CoM"]
 )
 
 #definition of values for inertia calculation
@@ -152,7 +153,7 @@ hyacinth.add_motor(hyacinth_motor, position=height)
 
 #add von karman nose cone
 hyacinth.add_nose(
-    length=valis["NoseCone"]["conical_length"],
+    length=valis["01_Nosecone"]["length_conical"],
     kind="von karman",
     position=0,
 )
@@ -171,7 +172,7 @@ hyacinth.add_trapezoidal_fins(
 #add boattail
 hyacinth.add_tail(
     top_radius=radius,
-    bottom_radius=valis["FinCan"]["boattail_bottom_radius"],
+    bottom_radius=valis["FinCan"]["boattail_radius_bottom"],
     length=valis["FinCan"]["boattail_length"],
     position=height-valis["FinCan"]["boattail_length"]
 )
